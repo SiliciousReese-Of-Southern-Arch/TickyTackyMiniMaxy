@@ -1,4 +1,4 @@
-package ticTacMinMax.board.exceptions;
+package ticTacMinMax.exceptions;
 
 @SuppressWarnings("serial")
 public class InvalidBoardToken extends RuntimeException {

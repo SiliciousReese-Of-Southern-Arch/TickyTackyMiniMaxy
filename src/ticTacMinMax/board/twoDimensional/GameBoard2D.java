@@ -1,17 +1,24 @@
 package ticTacMinMax.board.twoDimensional;
 
 import ticTacMinMax.HumanPlayer;
-import ticTacMinMax.TicTacToe;
 import ticTacMinMax.TicTacToePlayer;
-import ticTacMinMax.board.exceptions.InvalidMoveExeption;
+import ticTacMinMax.exceptions.InvalidMoveExeption;
+import ticTacMinMax.files.Configuration;
 import ticTacMinMax.intelligence.Max;
+import ticTacMinMax.userInterface.SwingLoader;
+import ticTacMinMax.userInterface.contentPanes.TicTacToePane;
 
 public class GameBoard2D extends Board2D {
 	private static final GameBoard2D INSTANCE = new GameBoard2D();
+	private static SwingLoader gui;
 	private static String TIE_GAME_TEXT = "YOU BOTH LOSE!!!";
 
 	private GameBoard2D() {
 		super();
+		
+		// Create GUI for board.
+		gui = SwingLoader.getInstance();
+		gui.startSwing();
 	}
 
 	public static GameBoard2D getInstance() {
@@ -19,7 +26,8 @@ public class GameBoard2D extends Board2D {
 	}
 
 	/**
-	 * Draw the board to standard out.
+	 * Draw the board to standard out. This will be replaced when the game is
+	 * moved to a GUI.
 	 */
 	@Deprecated
 	public void drawBoard() {
@@ -46,6 +54,8 @@ public class GameBoard2D extends Board2D {
 		}
 
 		System.out.println();
+		
+		TicTacToePane.getInstance().repaint();
 	}
 
 	/**
@@ -68,12 +78,12 @@ public class GameBoard2D extends Board2D {
 		TicTacToePlayer[] players = new TicTacToePlayer[2];
 
 		// Initialize both players.
-		if (TicTacToe.isPlayerOneHuman())
+		if (Configuration.isPlayerOneHuman())
 			players[0] = new HumanPlayer();
 		else
 			players[0] = new Max();
 
-		if (TicTacToe.isPlayerTwoHuman())
+		if (Configuration.isPlayerTwoHuman())
 			players[1] = new HumanPlayer();
 		else
 			players[1] = new Max();

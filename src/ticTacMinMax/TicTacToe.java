@@ -2,92 +2,88 @@ package ticTacMinMax;
 
 import java.util.Scanner;
 
-import ticTacMinMax.board.exceptions.InvalidMoveExeption;
 import ticTacMinMax.board.twoDimensional.GameBoard2D;
+import ticTacMinMax.exceptions.InvalidMoveExeption;
 
 /**
- * Play TicTacToe against another human, against the computer, or watch the
- * computer play against itself!
+ * Main class for Tic-Tac-Toe game.
  * 
  * @author SiliciousReese
- * @version 1.0.0-beta
- *
+ * @version 1.1.0-beta
  */
 public class TicTacToe {
-	// Game play parameters.
-	// TODO Move to a text file.
-	private static boolean IS_PLAYER_ONE_HUMAN = true;
-	private static boolean IS_PLAYER_TWO_HUMAN = false;
-	private static int MAX_SEARCH_DEPTH = 20;
-	private static boolean IS_THREE_DIMENSIONAL = false;
-	private static int BOARD_LENGTH = 3;
-	private static long MAX_SEARCH_TIME = 15000;
+	public static final int SUCCESS_EXIT_CODE = 0;
+	public static final int FAILURE_EXIT_CODE = -1;
 
-	// Used for determining whether to play again.
-	// TODO Should this be moved to another class?
-	private static final Scanner in = new Scanner(System.in);
+	public static Scanner in;
+
+	private static GameBoard2D board;
 
 	/**
-	 * Start a game of Tic Tac Toe
+	 * Start a game of Tic Tac Toe.
 	 */
 	public static void main(String[] args) {
-		// TODO This method needs parts of it to be refactored.
-		
-		// Loop until replay is not "y"
-		String replay = "y";
-		while (replay.equals("y")) {
-			// Loading output.
-			System.out.println("Player 1 human? " + IS_PLAYER_ONE_HUMAN + ".");
-			System.out.println("Player 2 human? " + IS_PLAYER_TWO_HUMAN + ".");
-			System.out.println("3 Dimensional board?" + IS_THREE_DIMENSIONAL + ".");
-			System.out.println("The length of the board is " + BOARD_LENGTH + ".");
-			System.out.println("The max search depth is " + MAX_SEARCH_DEPTH + ".");
-			System.out.println("The max search time is " + MAX_SEARCH_TIME + " milliseconds.");
+		System.out.println("Starting game...");
+		in = new Scanner(System.in);
+		board = GameBoard2D.getInstance();
 
-			System.out.println("Starting game...");
+		gameLoop();
+
+		exit(false);
+	}
+
+	/**
+	 * Loops until the player does not enter "y".or "yes"
+	 */
+	private static void gameLoop() {
+		// True until the user stops playing.
+		boolean replay = true;
+
+		while (replay) {
+			// Run the game.
+
+			// TODO The game should have it's own thread.
 			try {
-				// Wait a seconds for the player to see the output of the
-				// previous commands.
-				Thread.sleep(1500);
-
-				// start the game.
-				// TODO The game should be started in a different thread, but
-				// not in a try-catch.
-				GameBoard2D.getInstance().gamePlay();
-			} catch (InterruptedException e) {
-				System.out.println("Caught interupted exeption. Feeling sleep deprived...");
+				board.gamePlay();
 			} catch (InvalidMoveExeption invalidMove) {
 				invalidMove.printStackTrace();
+				exit(true);
 			}
 
 			// Replay test.
-			System.out.println("Play again (Y/n)?");
-			replay = in.nextLine();
-			if (replay.equals("n") || replay.equals("no"))
-				replay = "n";
-			else
-				replay = "y";
+			// TODO Research propper use of input scanner.
+			in.reset();
+			System.out.println("Play again (y/N)?");
+			String playAgain = "y";
+			in = new Scanner(System.in);
+			playAgain = in.next();
+			if (playAgain.equals("y") || playAgain.equals("yes")) {
+				replay = true;
+				board.resetBoard();
+			} else
+				replay = false;
 		}
 	}
 
-	// Methods to get game variables.
-	// TODO Move these to the files section of the program and use config.txt
-	public static boolean isPlayerOneHuman() {
-		return IS_PLAYER_ONE_HUMAN;
-	}
-	public static boolean isPlayerTwoHuman() {
-		return IS_PLAYER_TWO_HUMAN;
-	}
-	public static boolean isThreeDimensional() {
-		return IS_THREE_DIMENSIONAL;
-	}
-	public static int getMaxSearchDepth() {
-		return MAX_SEARCH_DEPTH;
-	}
-	public static int getBoardLength() {
-		return BOARD_LENGTH;
-	}
-	public static long getMaxSearchTime() {
-		return MAX_SEARCH_TIME;
+	/**
+	 * Cleans up and exits the program. The program is exited with a failure
+	 * code if error is true.
+	 * 
+	 * @param error
+	 *            Should be true if there was a problem.
+	 */
+	public static void exit(boolean error) {
+		int exitCode = SUCCESS_EXIT_CODE;
+
+		// TODO Clean up game, make sure streams are closed.
+		in.close();
+
+		if (error) {
+			System.out.println("Exiting abnormally.");
+			exitCode = FAILURE_EXIT_CODE;
+		} else
+			System.out.println("Exiting normally.");
+
+		System.exit(exitCode);
 	}
 }

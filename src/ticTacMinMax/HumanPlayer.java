@@ -1,13 +1,11 @@
 package ticTacMinMax;
 
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 import ticTacMinMax.board.twoDimensional.Board2D;
 import ticTacMinMax.board.twoDimensional.GameBoard2D;
 
 public class HumanPlayer implements TicTacToePlayer {
-	private static Scanner in = new Scanner(System.in);
 	private static final GameBoard2D gameBoard2D = GameBoard2D.getInstance();
 
 	@Override
@@ -27,8 +25,7 @@ public class HumanPlayer implements TicTacToePlayer {
 	 * the output will be a valid location on the board which the player is
 	 * allowed to place a piece at.
 	 * 
-	 * @return The valid column and row that the player has chosen to place ther
-	 *         piece at.
+	 * @return The column and row the player placed the piece at.
 	 */
 	private static int[] getPlayerInput() {
 		int[] coordinates = new int[2];
@@ -46,15 +43,15 @@ public class HumanPlayer implements TicTacToePlayer {
 				|| gameBoard2D.isPiecePlacedAt(column, row)) {
 			try {
 				if (wrongNumber)
-					System.out
-							.println("Invalid number detected, please try again.");
+					System.out.println(
+							"Invalid number detected, please try again.");
 				else
 					wrongNumber = true;
 				System.out.print("Enter the column number and press enter:\n");
-				column = in.nextInt() - 1;
+				column = TicTacToe.in.nextInt() - 1;
 
 				System.out.print("Enter the row number and press enter:\n");
-				row = in.nextInt() - 1;
+				row = TicTacToe.in.nextInt() - 1;
 			} catch (InputMismatchException e) {
 				System.out.println("Invalid input detected.");
 
@@ -62,12 +59,9 @@ public class HumanPlayer implements TicTacToePlayer {
 				// error from being printed to standard out.
 				wrongNumber = false;
 
-				// Set values to values that will make the loop run again.
+				// Set invalid values so the loop re-loops.
 				column = -1;
 				row = -1;
-				
-				in.close();
-				in = new Scanner(System.in);
 			}
 		}
 
@@ -79,19 +73,17 @@ public class HumanPlayer implements TicTacToePlayer {
 
 	@Override
 	public void victory(int playerNumber) {
-		in.close();
 		System.out.println("Player " + playerNumber + " won!");
 	}
 
 	@Override
 	public void defeat(int playerNumber) {
-		in.close();
-		System.out.println("Player " + playerNumber
-				+ " was beat by a superior player...");
+		System.out.println(
+				"Player " + playerNumber + " was beat by a superior player...");
 	}
 
 	@Override
 	public void tie(int playerNumber) {
-		in.close();
+		System.out.println("Cats Game!");
 	}
 }

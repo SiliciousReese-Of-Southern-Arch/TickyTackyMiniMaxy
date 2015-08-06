@@ -2,13 +2,13 @@ package ticTacMinMax.board.twoDimensional;
 
 import java.util.Arrays;
 
-import ticTacMinMax.TicTacToe;
-import ticTacMinMax.board.exceptions.InvalidBoardToken;
+import ticTacMinMax.exceptions.InvalidBoardToken;
+import ticTacMinMax.files.Configuration;
 
 public class Board2D {
 	// Board constants
 	// This must be a positive integer. It is usually three.
-	public static final int BOARD_LENGTH = TicTacToe.getBoardLength();
+	public static final int BOARD_LENGTH = Configuration.getBoardLength();
 	public static final int BOARD_SIZE = BOARD_LENGTH * BOARD_LENGTH;
 	public static final char PLAYER_1_TOKEN = "O".charAt(0);
 	public static final char PLAYER_2_TOKEN = "X".charAt(0);
@@ -29,7 +29,7 @@ public class Board2D {
 
 		if (PLAYER_1_TOKEN == PLAYER_2_TOKEN || PLAYER_1_TOKEN == BLANK_SPACE
 				|| PLAYER_2_TOKEN == BLANK_SPACE)
-			throw new InvalidBoardToken("Invalid board tokens used...");
+			throw new InvalidBoardToken("Tokens can not be equal.");
 	}
 
 	/**

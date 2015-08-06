@@ -1,8 +1,8 @@
 # A currently unimplemented file for configuring game play variables
 # Game play parameters. These can (not currently implemented) be edited in game.
-bool player1Human = true
-bool player2Human = false
-bool 3DBoard = false
-int maxSearchDepth = 20
-int boardSize = 3
-long maxSearchTime = 15000
+player1Human = true
+player2Human = false
+3DBoard = false
+maxSearchDepth = 20
+boardSize = 3
+maxSearchTime = 15000

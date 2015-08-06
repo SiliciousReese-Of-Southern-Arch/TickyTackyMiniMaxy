@@ -1,4 +1,4 @@
-package ticTacMinMax.board.exceptions;
+package ticTacMinMax.exceptions;
 
 // TODO Is this the best exception to extend?
 @SuppressWarnings("serial")

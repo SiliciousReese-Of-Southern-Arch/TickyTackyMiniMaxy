@@ -4,11 +4,12 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import ticTacMinMax.TicTacToe;
 import ticTacMinMax.board.twoDimensional.Board2D;
+import ticTacMinMax.files.Configuration;
 
 public class BestMoveFinder {
-	private static long WAIT_TIME_MILLISECONDS = TicTacToe.getMaxSearchTime();
+	private static long WAIT_TIME_MILLISECONDS =
+			Configuration.getMaxSearchTime();
 	private ForkJoinPool testThreads = new ForkJoinPool();
 	private ScorePosition[][] trials =
 			new ScorePosition[Board2D.BOARD_LENGTH][Board2D.BOARD_LENGTH];
@@ -16,7 +17,8 @@ public class BestMoveFinder {
 	private int player;
 	private int depth;
 
-	public BestMoveFinder(TestBoard testBoard, int playerNumber, int threadDepth) {
+	public BestMoveFinder(TestBoard testBoard, int playerNumber,
+			int threadDepth) {
 		board = testBoard;
 		player = playerNumber;
 		depth = threadDepth;
@@ -39,6 +41,7 @@ public class BestMoveFinder {
 	public int[] getBestPoint() {
 		int[] point;
 
+		System.out.print("Starting threads to check possible games.");
 		sewing();
 
 		boolean[][] possiblePoints = getHighestScoringPoint();
@@ -55,6 +58,7 @@ public class BestMoveFinder {
 		// the highest point value.
 		possiblePoints =
 				new boolean[Board2D.BOARD_LENGTH][Board2D.BOARD_LENGTH];
+		
 		int highScore = Integer.MIN_VALUE;
 
 		for (int i = 0; i < Board2D.BOARD_LENGTH; i++)
