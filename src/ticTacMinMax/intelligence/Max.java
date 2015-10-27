@@ -5,32 +5,31 @@ import ticTacMinMax.TicTacToePlayer;
 /**
  * MAX is my mini-max Tic-Tac-Toe algorithm.
  */
-public class Max implements TicTacToePlayer {
+public class Max extends TicTacToePlayer {
+	public Max(int turnOrder) {
+		super(turnOrder);
+	}
+
 	@Override
-	public int[] takeTurn(int playerNumber) {
-		System.out.println("Machine is thinking...");
+	public void takeTurn() {
+		// TODO Determine if this really needs the playerOrder
 		BestMoveFinder moveFinder =
-				new BestMoveFinder(new TestBoard(), playerNumber, 0);
+				new BestMoveFinder(new TestBoard(), playerOrder, 0);
 
 		int[] point = moveFinder.getBestPoint();
 
-		return point;
+		gameBoard.placePieceAt(point[0], point[1], playerOrder);
 	}
 
 	@Override
-	public void victory(int playerNumber) {
-		System.out.println("MACHINE> WIN FOR THE MACHINE!!!");
+	public void victory() {
+		System.out.println("WIN FOR THE MACHINE!!!");
 	}
 
 	@Override
-	public void defeat(int playerNumber) {
+	public void defeat() {
 		// This is really a bug in the program because the algorithm should only
 		// ever win or tie, never lose.
-		System.out.println("MACHINE> 3RR0R... HUMAN VICTORY");
-	}
-
-	@Override
-	public void tie(int playerNumber) {
-		System.out.println("MACHINE> Good Game.");
+		System.out.println("3RR0R... HUMAN VICTORY");
 	}
 }

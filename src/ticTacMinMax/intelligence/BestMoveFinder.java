@@ -5,14 +5,15 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import ticTacMinMax.board.twoDimensional.Board2D;
-import ticTacMinMax.files.Configuration;
+import ticTacMinMax.stream.StreamManager;
 
 public class BestMoveFinder {
 	private static long WAIT_TIME_MILLISECONDS =
-			Configuration.getMaxSearchTime();
+			Long.parseLong(
+					StreamManager.getInstance().getSetting("Max_Search_Time"));
 	private ForkJoinPool testThreads = new ForkJoinPool();
 	private ScorePosition[][] trials =
-			new ScorePosition[Board2D.BOARD_LENGTH][Board2D.BOARD_LENGTH];
+			new ScorePosition[Board2D.BOARD_DIMENSION][Board2D.BOARD_DIMENSION];
 	protected TestBoard board;
 	private int player;
 	private int depth;
@@ -30,8 +31,8 @@ public class BestMoveFinder {
 
 		notSewing();
 
-		for (int i = 0; i < Board2D.BOARD_LENGTH; i++)
-			for (int j = 0; j < Board2D.BOARD_LENGTH; j++)
+		for (int i = 0; i < Board2D.BOARD_DIMENSION; i++)
+			for (int j = 0; j < Board2D.BOARD_DIMENSION; j++)
 				if (trials[i][j] != null && trials[i][j].getScore() > score)
 					score = trials[i][j].getScore();
 
@@ -41,7 +42,6 @@ public class BestMoveFinder {
 	public int[] getBestPoint() {
 		int[] point;
 
-		System.out.print("Starting threads to check possible games.");
 		sewing();
 
 		boolean[][] possiblePoints = getHighestScoringPoint();
@@ -57,12 +57,12 @@ public class BestMoveFinder {
 		// Get a list of valid moves. These are all the moves that are tied for
 		// the highest point value.
 		possiblePoints =
-				new boolean[Board2D.BOARD_LENGTH][Board2D.BOARD_LENGTH];
-		
+				new boolean[Board2D.BOARD_DIMENSION][Board2D.BOARD_DIMENSION];
+
 		int highScore = Integer.MIN_VALUE;
 
-		for (int i = 0; i < Board2D.BOARD_LENGTH; i++)
-			for (int j = 0; j < Board2D.BOARD_LENGTH; j++)
+		for (int i = 0; i < Board2D.BOARD_DIMENSION; i++)
+			for (int j = 0; j < Board2D.BOARD_DIMENSION; j++)
 				if (trials[i][j] != null) {
 					if (trials[i][j].getScore() > highScore) {
 						highScore = trials[i][j].getScore();
@@ -80,8 +80,8 @@ public class BestMoveFinder {
 	private int[] pickFirstPoint(boolean[][] possiblePoints) {
 		int[] point = new int[2];
 
-		for (int i = 0; i < Board2D.BOARD_LENGTH; i++) {
-			for (int j = 0; j < Board2D.BOARD_LENGTH; j++) {
+		for (int i = 0; i < Board2D.BOARD_DIMENSION; i++) {
+			for (int j = 0; j < Board2D.BOARD_DIMENSION; j++) {
 				if (possiblePoints[i][j]) {
 					point[0] = i;
 					point[1] = j;
@@ -98,11 +98,11 @@ public class BestMoveFinder {
 	 */
 	private void sewing() {
 		Future[][] threads =
-				new Future[Board2D.BOARD_LENGTH][Board2D.BOARD_LENGTH];
+				new Future[Board2D.BOARD_DIMENSION][Board2D.BOARD_DIMENSION];
 
 		// Create and start a thread for each available move.
-		for (int i = 0; i < Board2D.BOARD_LENGTH; i++)
-			for (int j = 0; j < Board2D.BOARD_LENGTH; j++) {
+		for (int i = 0; i < Board2D.BOARD_DIMENSION; i++)
+			for (int j = 0; j < Board2D.BOARD_DIMENSION; j++) {
 				if (!board.isPiecePlacedAt(i, j)) {
 					TestBoard testBoard = new TestBoard(board);
 					trials[i][j] =
@@ -120,16 +120,16 @@ public class BestMoveFinder {
 			// Smother the threads if they do not finish soon enough.
 			if (!testThreads.awaitTermination(WAIT_TIME_MILLISECONDS,
 					TimeUnit.MILLISECONDS))
-				for (int i = 0; i < Board2D.BOARD_LENGTH; i++)
-					for (int j = 0; j < Board2D.BOARD_LENGTH; j++)
+				for (int i = 0; i < Board2D.BOARD_DIMENSION; i++)
+					for (int j = 0; j < Board2D.BOARD_DIMENSION; j++)
 						if (threads[i][j] != null)
 							threads[i][j].cancel(true);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			// If the test threads are interrupted make sure they and all their
 			// children die suddenly.
-			for (int i = 0; i < Board2D.BOARD_LENGTH; i++)
-				for (int j = 0; j < Board2D.BOARD_LENGTH; j++)
+			for (int i = 0; i < Board2D.BOARD_DIMENSION; i++)
+				for (int j = 0; j < Board2D.BOARD_DIMENSION; j++)
 					if (threads[i][j] != null)
 						threads[i][j].cancel(true);
 		}
@@ -138,8 +138,8 @@ public class BestMoveFinder {
 
 	private void notSewing() {
 		// Create and start a thread for each available move.
-		for (int i = 0; i < Board2D.BOARD_LENGTH; i++)
-			for (int j = 0; j < Board2D.BOARD_LENGTH; j++) {
+		for (int i = 0; i < Board2D.BOARD_DIMENSION; i++)
+			for (int j = 0; j < Board2D.BOARD_DIMENSION; j++) {
 				if (!board.isPiecePlacedAt(i, j)) {
 					TestBoard testBoard = new TestBoard(board);
 					trials[i][j] =

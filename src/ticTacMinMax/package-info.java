@@ -1,6 +1,6 @@
 /**
  * A Tic-Tac-Toe game that uses a min-max algorithm for determining the
- * computers moves.
+ * computers moves. Requires java 8.
  * 
  * @author Daniel Darnell
  */

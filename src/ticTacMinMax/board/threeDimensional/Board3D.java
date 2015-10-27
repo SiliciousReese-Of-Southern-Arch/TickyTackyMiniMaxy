@@ -2,15 +2,17 @@ package ticTacMinMax.board.threeDimensional;
 
 import java.util.Arrays;
 
+import ticTacMinMax.board.GameBoard;
 import ticTacMinMax.exceptions.InvalidBoardToken;
-import ticTacMinMax.files.Configuration;
+import ticTacMinMax.stream.StreamManager;
 
-public class Board3D {
+public class Board3D extends GameBoard {
 	// Board constants
 	// This must be a positive integer. It is usually three.
-	public static final int BOARD_LENGTH = Configuration.getBoardLength();
-	public static final int BOARD_SIZE = BOARD_LENGTH * BOARD_LENGTH
-			* BOARD_LENGTH;
+	public static int BOARD_LENGTH =
+			Integer.parseInt(
+					StreamManager.getInstance().getSetting("Board_Size"));
+	public static int BOARD_SIZE = BOARD_LENGTH * BOARD_LENGTH * BOARD_LENGTH;
 	public static final char PLAYER_1_TOKEN = "O".charAt(0);
 	public static final char PLAYER_2_TOKEN = "X".charAt(0);
 	public static final char BLANK_SPACE = "_".charAt(0);
@@ -47,6 +49,7 @@ public class Board3D {
 
 		return newBoard;
 	}
+
 	/**
 	 * place a piece at the given location on the board
 	 * 

@@ -1,14 +1,16 @@
 package ticTacMinMax.intelligence;
 
 import ticTacMinMax.board.twoDimensional.Board2D;
-import ticTacMinMax.files.Configuration;
+import ticTacMinMax.stream.StreamManager;
 
 class ScorePosition implements Runnable {
 	// Max depth is used to determine how many recursive calls this is allowed
 	// to make. This number greatly impacts the runtime. The max number depends
 	// on your java implementation, but I would advise against anything higher
 	// than 4. This needs to be at least 3 to work correctly on a 3 by 3 board.
-	public static final int MAX_DEPTH = Configuration.getMaxSearchDepth();
+	public static final int MAX_DEPTH =
+			Integer.parseInt(
+					StreamManager.getInstance().getSetting("Max_Search_Depth"));
 	private int depth;
 	private int player;
 	private int column;
@@ -33,8 +35,6 @@ class ScorePosition implements Runnable {
 	@Override
 	public void run() {
 		boolean win = false;
-		System.out.println("Scoring position at" + "\n" + "column: " + column
-				+ "\n" + "row: " + row + "\n");
 		testBoard.placePieceAt(column, row, player);
 
 		// If the player can win this turn score = 1.
@@ -50,8 +50,8 @@ class ScorePosition implements Runnable {
 			int nextDepth = depth + 1;
 
 			// If the opponent can win this turn score = -1.
-			for (int i = 0; i < Board2D.BOARD_LENGTH && !win; i++)
-				for (int j = 0; j < Board2D.BOARD_LENGTH && !win; j++)
+			for (int i = 0; i < Board2D.BOARD_DIMENSION && !win; i++)
+				for (int j = 0; j < Board2D.BOARD_DIMENSION && !win; j++)
 					if (!testBoard.isPiecePlacedAt(i, j)) {
 						testBoard.placePieceAt(i, j, nextPlayer);
 						if (testBoard.isGameWon()) {
@@ -79,9 +79,6 @@ class ScorePosition implements Runnable {
 			// If there are no more available spaces after this turn and no
 			// player has won, score = 0. This is the default value.
 		}
-
-		System.out.println("Scored position " + column + ", " + row
-				+ " a score of " + score + "\n");
 	}
 
 	public int getScore() {

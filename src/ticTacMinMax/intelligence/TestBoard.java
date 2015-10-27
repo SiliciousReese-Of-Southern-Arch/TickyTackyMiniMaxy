@@ -1,10 +1,9 @@
 package ticTacMinMax.intelligence;
 
 import ticTacMinMax.board.twoDimensional.Board2D;
-import ticTacMinMax.board.twoDimensional.GameBoard2D;
 
 public class TestBoard extends Board2D {
-	private static final GameBoard2D gameBoard2D = GameBoard2D.getInstance();
+	private static final Board2D gameBoard2D = Board2D.getGameBoard();
 
 	/**
 	 * A temporary board used to test the effect of placing a piece on the
@@ -43,8 +42,8 @@ public class TestBoard extends Board2D {
 		int spaces = 0;
 
 		// Increment spaces for each non-empty space.
-		for (int i = 0; i < BOARD_LENGTH; i++)
-			for (int j = 0; j < BOARD_LENGTH; j++)
+		for (int i = 0; i < BOARD_DIMENSION; i++)
+			for (int j = 0; j < BOARD_DIMENSION; j++)
 				if (board[i][j] == BLANK_SPACE)
 					spaces++;
 

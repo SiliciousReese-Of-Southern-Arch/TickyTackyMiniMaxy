@@ -6,4 +6,4 @@
  * 
  * @author daniel
  */
-package ticTacMinMax.files;
+package ticTacMinMax.stream;

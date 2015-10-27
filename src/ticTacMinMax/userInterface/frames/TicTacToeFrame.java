@@ -19,11 +19,11 @@ public class TicTacToeFrame extends JFrame {
 	private TicTacToeFrame() throws HeadlessException {
 		// Create Frame with title.
 		super("Tic Tac Toe");
-		
+
 		// TODO Make size configurable
 		setSize(500, 500);
 		setResizable(false);
-		
+
 		// The Window listener stop the program when the window is disposed.
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		WindowCloser theWatcher = new WindowCloser();
