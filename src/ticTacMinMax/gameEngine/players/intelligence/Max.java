@@ -1,24 +1,26 @@
-package ticTacMinMax.intelligence;
+package ticTacMinMax.gameEngine.players.intelligence;
 
-import ticTacMinMax.TicTacToePlayer;
+import ticTacMinMax.gameEngine.board.twoDimensional.BoardLocation2D;
+import ticTacMinMax.gameEngine.players.TicTacToePlayer;
 
-/**
- * MAX is my mini-max Tic-Tac-Toe algorithm.
- */
+/** MAX is my mini-max Tic-Tac-Toe algorithm. */
 public class Max extends TicTacToePlayer {
 	public Max(int turnOrder) {
 		super(turnOrder);
 	}
 
 	@Override
-	public void takeTurn() {
+	public BoardLocation2D getMove() {
 		// TODO Determine if this really needs the playerOrder
-		BestMoveFinder moveFinder =
-				new BestMoveFinder(new TestBoard(), playerOrder, 0);
+		BestMoveFinder moveFinder = new BestMoveFinder(new TestBoard(),
+				playerOrder, 0);
 
 		int[] point = moveFinder.getBestPoint();
 
-		gameBoard.placePieceAt(point[0], point[1], playerOrder);
+		BoardLocation2D loc = new BoardLocation2D(point[0], point[1]);
+
+		gameBoard.placePiece(loc, playerOrder);
+		return null;
 	}
 
 	@Override

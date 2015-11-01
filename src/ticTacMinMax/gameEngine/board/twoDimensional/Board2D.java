@@ -1,113 +1,81 @@
-package ticTacMinMax.board.twoDimensional;
+package ticTacMinMax.gameEngine.board.twoDimensional;
 
 import java.util.Arrays;
 
-import ticTacMinMax.board.GameBoard;
-import ticTacMinMax.exceptions.InvalidBoardToken;
-import ticTacMinMax.exceptions.InvalidMoveExeption;
+import ticTacMinMax.gameEngine.board.GameBoard;
 import ticTacMinMax.stream.StreamManager;
+import ticTacMinMax.userInterface.SwingManager;
 import ticTacMinMax.userInterface.contentPanes.TicTacToePane;
 
 public class Board2D extends GameBoard {
 	// Board constants
 	// This must be a positive integer. It is usually three.
-	public static final int BOARD_DIMENSION =
-			Integer.parseInt(
-					StreamManager.getInstance().getSetting("Board_Size"));
+	public static final int BOARD_DIMENSION = Integer.parseInt(StreamManager
+			.getInstance().getRawConfig("Board_Size"));
 	public static final int BOARD_SIZE = BOARD_DIMENSION * BOARD_DIMENSION;
-	public static final char PLAYER_1_TOKEN = "X".charAt(0);
-	public static final char PLAYER_2_TOKEN = "O".charAt(0);
-	public static final char BLANK_SPACE = "_".charAt(0);
-	// The main board.
-	private static Board2D gameBoard = new Board2D();
+	/* TODO Get rid of tokens, board is graphical and don't need none of this
+	 * token business. */
+	public static final char PLAYER_1_TOKEN = 'X';
+	public static final char PLAYER_2_TOKEN = 'O';
+	public static final char BLANK_SPACE = '_';
 
-	private static TicTacToePane boardGUI = TicTacToePane.getInstance();
+	private static TicTacToePane boardGUI = SwingManager.getInstance()
+			.getFrame().getContentPain();
+
+	public static String TIE_GAME_TEXT = "YOU BOTH LOSE!!!";
 
 	// The variable to store the board in.
 	// TODO Use byte array to save space and faster calculations.
 	public char[][] board;
-	public static StreamManager streams = StreamManager.getInstance();
-	public static String TIE_GAME_TEXT = "YOU BOTH LOSE!!!";
 
-	/**
-	 * A TicTacToe board.
+	/** A TicTacToe board.
 	 * 
 	 * @throws InvalidBoardToken
 	 *             Throws an exception if the board tokens initialize
-	 *             incorrectly.
-	 */
-	public Board2D() throws InvalidBoardToken {
-		board = initializeBoard();
-
-		if (PLAYER_1_TOKEN == PLAYER_2_TOKEN || PLAYER_1_TOKEN == BLANK_SPACE
-				|| PLAYER_2_TOKEN == BLANK_SPACE)
-			throw new InvalidBoardToken("Tokens can not be the same.");
-	}
-
-	/**
-	 * Initialize the board to the blank value.
-	 */
-	public static final char[][] initializeBoard() {
-		char[][] newBoard = new char[BOARD_DIMENSION][BOARD_DIMENSION];
-
+	 *             incorrectly. */
+	public Board2D() {
+		/* create board. */
+		board = new char[BOARD_DIMENSION][BOARD_DIMENSION];
 		for (int i = 0; i < BOARD_DIMENSION; i++)
 			for (int j = 0; j < BOARD_DIMENSION; j++)
-				newBoard[i][j] = BLANK_SPACE;
-
-		return newBoard;
+				board[i][j] = BLANK_SPACE;
 	}
 
-	public static Board2D getGameBoard() {
-		return gameBoard;
-	}
-
-	/**
-	 * place a piece at the given location on the board
+	/** place a piece at the given location on the board.
 	 * 
-	 * @param column
-	 *            The column number to place the piece at. The columns start at
-	 *            one.
-	 * @param row
-	 *            The row number to place the piece at. The rows start at one.
 	 * @param playerNumber
 	 *            Either player one or player two. This determines the symbol to
 	 *            place in the board array.
-	 * 
 	 * @throws InvalidMoveExeption
-	 *             If the location is already taken.
-	 * @throws ArrayIndexOutOfBoundsException
-	 *             If the column or row is outside of the board.
-	 */
-	public void placePieceAt(int column, int row, int playerNumber) {
+	 *             If the location is already taken. */
+	public void placePiece(BoardLocation2D loc, int playerNumber) {
+		int row = loc.row();
+		int column = loc.column();
 		if (board[column][row] == BLANK_SPACE) {
 			if (playerNumber == 1)
 				board[column][row] = PLAYER_1_TOKEN;
 			else
 				board[column][row] = PLAYER_2_TOKEN;
 		} else
-			throw new InvalidMoveExeption("Location not empty."
+			throw new UnsupportedOperationException("Location not empty."
 					+ board[column][row] + " placed at " + column + ", " + row);
 
 		boardGUI.repaint();
 	}
 
-	/**
-	 * Determine if a piece is placed at a given location.
+	/** Determine if a piece is placed at a given location.
 	 * 
 	 * @param column
 	 *            The column number to place the piece at. The columns start at
 	 *            one.
 	 * @param row
 	 *            The row number to place the piece at. The rows start at one.
-	 * @return True if there is already a piece placed at the given location.
-	 */
+	 * @return True if there is already a piece placed at the given location. */
 	public boolean isPiecePlacedAt(int column, int row) {
-		// TODO Should take array as input.
 		return board[column][row] != BLANK_SPACE;
 	}
 
-	/**
-	 * Determine if a specific player's piece is placed at the given location.
+	/** Determine if a specific player's piece is placed at the given location.
 	 * 
 	 * @param column
 	 *            The column number to place the piece at. The columns start at
@@ -116,28 +84,22 @@ public class Board2D extends GameBoard {
 	 *            The row number to place the piece at. The rows start at one.
 	 * @param piece
 	 *            The players piece to check for.
-	 * @return True if the given piece is at the given location.
-	 *
-	 */
-	public boolean isPiecePlacedAt(int column, int row, char piece) {
+	 * @return True if the given piece is at the given location. */
+	public boolean getPieceAt(int column, int row, char piece) {
 		return board[column][row] == piece;
 	}
 
-	/**
-	 * @return True if there is a winner. This can easily be used to determine
+	/** @return True if there is a winner. This can easily be used to determine
 	 *         the winner by running this check immediately when a player places
-	 *         piece because only that play can be the winner.
-	 */
+	 *         piece because only that play can be the winner. */
 	public boolean isGameWon() {
 		// Use smaller methods to check each of the winning conditions.
 		return (checkColumns() || checkRows() || checkDiagonals());
 	}
 
-	/**
-	 * Check the each column, called by the isGameWon() method.
+	/** Check the each column, called by the isGameWon() method.
 	 * 
-	 * @return True if any of the columns have all of the same player tokens.
-	 */
+	 * @return True if any of the columns have all of the same player tokens. */
 	private boolean checkColumns() {
 		// Win defaults to false, row stores the number of consecutive tokens, i
 		// is the column number in the board array and j is the column in the
@@ -151,8 +113,7 @@ public class Board2D extends GameBoard {
 			if (board[0][j] != BLANK_SPACE) {
 				playerToken = board[0][j];
 				row = 0;
-				for (i = 0; i < BOARD_DIMENSION
-						&& board[i][j] == playerToken; i++)
+				for (i = 0; i < BOARD_DIMENSION && board[i][j] == playerToken; i++)
 					row++;
 				win = (row == BOARD_DIMENSION);
 			}
@@ -160,11 +121,9 @@ public class Board2D extends GameBoard {
 		return win;
 	}
 
-	/**
-	 * Check the each row, called by the isGameWon() method.
+	/** Check the each row, called by the isGameWon() method.
 	 * 
-	 * @return True if any of the rows have all of the same player tokens.
-	 */
+	 * @return True if any of the rows have all of the same player tokens. */
 	private boolean checkRows() {
 		// Win defaults to false, row stores the number of consecutive tokens, i
 		// is the column number in the board array and j is the column in the
@@ -178,8 +137,7 @@ public class Board2D extends GameBoard {
 			if (board[i][0] != BLANK_SPACE) {
 				playerToken = board[i][0];
 				row = 0;
-				for (j = 0; j < BOARD_DIMENSION
-						&& board[i][j] == playerToken; j++)
+				for (j = 0; j < BOARD_DIMENSION && board[i][j] == playerToken; j++)
 					row++;
 				win = (row == BOARD_DIMENSION);
 			}
@@ -187,11 +145,9 @@ public class Board2D extends GameBoard {
 		return win;
 	}
 
-	/**
-	 * Check the each diagonal, called by the isGameWon() method.
+	/** Check the each diagonal, called by the isGameWon() method.
 	 * 
-	 * @return True if either of the diagonals have all the same player tokens.
-	 */
+	 * @return True if either of the diagonals have all the same player tokens. */
 	private boolean checkDiagonals() {
 		// Win defaults to false, row stores the number of consecutive tokens, i
 		// is the column number in the board array and j is the column in the
@@ -227,9 +183,7 @@ public class Board2D extends GameBoard {
 		return win;
 	}
 
-	/**
-	 * @return True if every space on the board has a non-empty value.
-	 */
+	/** @return True if every space on the board has a non-empty value. */
 	public boolean isFull() {
 		// Default to true.
 		boolean full = true;
@@ -243,9 +197,7 @@ public class Board2D extends GameBoard {
 		return full;
 	}
 
-	/**
-	 * @return A copy of the board.
-	 */
+	/** @return A copy of the board. */
 	public char[][] getCopyOfBoard() {
 		char[][] clone = new char[BOARD_DIMENSION][BOARD_DIMENSION];
 

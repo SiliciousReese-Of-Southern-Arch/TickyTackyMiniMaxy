@@ -12,11 +12,9 @@ import ticTacMinMax.userInterface.contentPanes.TicTacToePane;
 // TODO Remove suppress warning.
 @SuppressWarnings("serial")
 public class TicTacToeFrame extends JFrame {
-	private static final TicTacToeFrame INSTANCE = new TicTacToeFrame();
+	private TicTacToePane contentPane;
 
-	private static TicTacToePane contentPane;
-
-	private TicTacToeFrame() throws HeadlessException {
+	public TicTacToeFrame() throws HeadlessException {
 		// Create Frame with title.
 		super("Tic Tac Toe");
 
@@ -30,14 +28,14 @@ public class TicTacToeFrame extends JFrame {
 		addWindowListener(theWatcher);
 
 		// Uses a separate class for the content pane.
-		contentPane = TicTacToePane.getInstance();
+		contentPane = new TicTacToePane();
 		setContentPane(contentPane);
 
 		setVisible(true);
 	}
 
-	public static TicTacToeFrame getInstance() {
-		return INSTANCE;
+	public TicTacToePane getContentPain() {
+		return contentPane;
 	}
 }
 

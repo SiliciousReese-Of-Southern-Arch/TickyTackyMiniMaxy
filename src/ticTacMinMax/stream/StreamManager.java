@@ -1,8 +1,5 @@
 package ticTacMinMax.stream;
 
-import static ticTacMinMax.board.twoDimensional.Board2D.PLAYER_1_TOKEN;
-import static ticTacMinMax.board.twoDimensional.Board2D.PLAYER_2_TOKEN;
-
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
 import java.io.IOException;
@@ -25,18 +22,16 @@ public class StreamManager {
 
 	private static final StreamManager INSTANCE = new StreamManager();
 
-	/**
-	 * True if the program is running from inside a jar file. This is used to
-	 * make sure the compressed data is handled correctly.
-	 */
+	private static final String CONFIG_FILE_NAME = "DefaultConfig.txt";
+
+	/** True if the program is running from inside a jar file. This is used to
+	 * make sure the compressed data is handled correctly. */
 	private boolean runFromJar;
 
 	// The folder where resource files are located inside the source directory.
 	private Path runningFromFolder;
 	// The folder to store files from the game.
 	private Path gameFolder;
-
-	private static final String configFileName = "DefaultConfig.txt";
 
 	// TODO Program log.
 	@SuppressWarnings("unused")
@@ -47,20 +42,20 @@ public class StreamManager {
 	private HashSet<Closeable> streams;
 
 	private StreamManager() {
-		gameFolder =
-				Paths.get(System.getProperties().getProperty("user.dir"))
-						.resolve("src");
+		gameFolder = Paths.get(System.getProperties().getProperty("user.dir"))
+				.resolve("src");
 
-		runningFromFolder =
-				Paths.get(System.getProperties().getProperty("java.class.path"))
-						.toAbsolutePath();
+		runningFromFolder = Paths.get(
+				System.getProperties().getProperty("java.class.path"))
+				.toAbsolutePath();
 		runFromJar = isJar(runningFromFolder);
 
 		streams = new HashSet<Closeable>();
 
 		logFile = getLog();
 
-		Path configLocation = gameFolder.resolve("res").resolve(configFileName);
+		Path configLocation = gameFolder.resolve("res").resolve(
+				CONFIG_FILE_NAME);
 		try {
 			config = getConfig(configLocation);
 		} catch (IOException e) {
@@ -81,14 +76,11 @@ public class StreamManager {
 		return INSTANCE;
 	}
 
-	/**
-	 * @param classPath
+	/** @param classPath
 	 *            Path to file to test.
-	 * @return
-	 * 		True if the file looks like a jar. It "looks" like a jar if the
+	 * @return True if the file looks like a jar. It "looks" like a jar if the
 	 *         file does ends with ".jar" OR the content probe detects that it
-	 *         is a java archive.
-	 */
+	 *         is a java archive. */
 	private boolean isJar(Path classPath) {
 		// TODO Improve and test jar checking algorithm
 		boolean jar = false;
@@ -131,46 +123,48 @@ public class StreamManager {
 		return config;
 	}
 
-	public String getSetting(String settingName) {
-		String setting = config.getProperty(settingName);
-		return setting;
+	/** Get String directly from config file.
+	 * 
+	 * @param settingName
+	 *            The name of the setting in the config file.
+	 * @return The value of the setting. */
+	public String getRawConfig(String settingName) {
+		return config.getProperty(settingName);
 	}
 
-	/**
-	 * @param characterImage
+	public boolean getBool(String settingName) {
+		return Boolean.parseBoolean(config.getProperty(settingName));
+	}
+
+	/** @param characterImage
 	 *            The character representing which part of the symbol image to
 	 *            return. This should either be the x or o character
-	 * @return
-	 * 		The part of the symbol image specified by item.
-	 */
+	 * @return The part of the symbol image specified by item. */
 	public BufferedImage getSubimage(char characterImage) {
+		char PLAYER_1_TOKEN = 'O';
+		char PLAYER_2_TOKEN = 'X';
 		BufferedImage image = null;
 
 		if (characterImage == PLAYER_1_TOKEN)
 			image = symbols.getXImage();
 		else if (characterImage == PLAYER_2_TOKEN)
 			image = symbols.getOImage();
-		else
-			throw new Error();
 
 		return image;
 	}
 
 	private SymbolImage getSymbolImage() {
-		SymbolImage image =
-				new SymbolImage(
-						gameFolder.resolve("res").resolve("symbols.png"));
+		SymbolImage image = new SymbolImage(gameFolder.resolve("res").resolve(
+				"symbols.png"));
 
 		return image;
 	}
 
-	/**
-	 * Make sure all the streams are closed.
+	/** Make sure all the streams are closed.
 	 * 
 	 * @throws IOException
 	 *             if the streams fail to close. There is no guarantee the
-	 *             streams will all be closed if this occurs.
-	 */
+	 *             streams will all be closed if this occurs. */
 	public void closeAllStreams() throws IOException {
 		while (streams.iterator().hasNext()) {
 			Closeable item = streams.iterator().next();
@@ -180,11 +174,9 @@ public class StreamManager {
 		streams = null;
 	}
 
-	/**
-	 * Check the use data directory and make sure all data is valid. If the
+	/** Check the use data directory and make sure all data is valid. If the
 	 * directory does not contain valid data, move resources from res folder to
-	 * game directory.
-	 */
+	 * game directory. */
 	private void verifyGameData() throws IOException {
 		// TODO Check user directory for config
 

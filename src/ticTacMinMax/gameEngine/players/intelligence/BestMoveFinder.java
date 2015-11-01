@@ -1,25 +1,24 @@
-package ticTacMinMax.intelligence;
+package ticTacMinMax.gameEngine.players.intelligence;
 
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import ticTacMinMax.board.twoDimensional.Board2D;
+import ticTacMinMax.gameEngine.board.twoDimensional.Board2D;
 import ticTacMinMax.stream.StreamManager;
 
 public class BestMoveFinder {
-	private static long WAIT_TIME_MILLISECONDS =
-			Long.parseLong(
-					StreamManager.getInstance().getSetting("Max_Search_Time"));
+	private static long WAIT_TIME_MILLISECONDS = Long.parseLong(StreamManager
+			.getInstance().getRawConfig("Max_Search_Time"));
+
 	private ForkJoinPool testThreads = new ForkJoinPool();
-	private ScorePosition[][] trials =
-			new ScorePosition[Board2D.BOARD_DIMENSION][Board2D.BOARD_DIMENSION];
+	private ScorePosition[][] trials = new ScorePosition[Board2D.BOARD_DIMENSION][Board2D.BOARD_DIMENSION];
+
 	protected TestBoard board;
 	private int player;
 	private int depth;
 
-	public BestMoveFinder(TestBoard testBoard, int playerNumber,
-			int threadDepth) {
+	public BestMoveFinder(TestBoard testBoard, int playerNumber, int threadDepth) {
 		board = testBoard;
 		player = playerNumber;
 		depth = threadDepth;
@@ -56,8 +55,7 @@ public class BestMoveFinder {
 
 		// Get a list of valid moves. These are all the moves that are tied for
 		// the highest point value.
-		possiblePoints =
-				new boolean[Board2D.BOARD_DIMENSION][Board2D.BOARD_DIMENSION];
+		possiblePoints = new boolean[Board2D.BOARD_DIMENSION][Board2D.BOARD_DIMENSION];
 
 		int highScore = Integer.MIN_VALUE;
 
@@ -97,16 +95,15 @@ public class BestMoveFinder {
 	 * Sew the threads.
 	 */
 	private void sewing() {
-		Future[][] threads =
-				new Future[Board2D.BOARD_DIMENSION][Board2D.BOARD_DIMENSION];
+		Future[][] threads = new Future[Board2D.BOARD_DIMENSION][Board2D.BOARD_DIMENSION];
 
 		// Create and start a thread for each available move.
 		for (int i = 0; i < Board2D.BOARD_DIMENSION; i++)
 			for (int j = 0; j < Board2D.BOARD_DIMENSION; j++) {
 				if (!board.isPiecePlacedAt(i, j)) {
 					TestBoard testBoard = new TestBoard(board);
-					trials[i][j] =
-							new ScorePosition(testBoard, i, j, player, depth);
+					trials[i][j] = new ScorePosition(testBoard, i, j, player,
+							depth);
 					threads[i][j] = testThreads.submit(trials[i][j]);
 				} else
 					// TODO Remove null assignment.
@@ -142,8 +139,8 @@ public class BestMoveFinder {
 			for (int j = 0; j < Board2D.BOARD_DIMENSION; j++) {
 				if (!board.isPiecePlacedAt(i, j)) {
 					TestBoard testBoard = new TestBoard(board);
-					trials[i][j] =
-							new ScorePosition(testBoard, i, j, player, depth);
+					trials[i][j] = new ScorePosition(testBoard, i, j, player,
+							depth);
 					trials[i][j].run();
 				} else
 					// TODO Remove null assignment.

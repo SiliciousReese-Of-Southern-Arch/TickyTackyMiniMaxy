@@ -7,3 +7,4 @@
  * @author daniel
  */
 package ticTacMinMax.stream;
+

@@ -8,20 +8,17 @@ import java.util.Arrays;
 import javax.swing.JDesktopPane;
 import javax.swing.event.MouseInputListener;
 
-import ticTacMinMax.userInterface.GraphicalBoard;
+import ticTacMinMax.gameEngine.board.twoDimensional.GraphicalBoard;
 
 // TODO remove suppress warning.
 @SuppressWarnings("serial")
 public class TicTacToePane extends JDesktopPane {
-	private static final TicTacToePane INSTANCE = new TicTacToePane();
-
-	private static GraphicalBoard drawingBoard;
-
 	private static final Color BACK_COLOR = Color.CYAN;
 
 	private int[] gridClick;
+	private GraphicalBoard drawingBoard;
 
-	private TicTacToePane() {
+	public TicTacToePane() {
 		super();
 
 		setBackground(BACK_COLOR);
@@ -30,10 +27,6 @@ public class TicTacToePane extends JDesktopPane {
 
 		MouseInputListener mouseListener = getMouseReader();
 		addMouseListener(mouseListener);
-	}
-
-	public static TicTacToePane getInstance() {
-		return INSTANCE;
 	}
 
 	@Override
@@ -67,15 +60,16 @@ public class TicTacToePane extends JDesktopPane {
 
 			// TODO NEVER USE NULL ASSIGNMENT!!!
 			gridClick = null;
-		};
+		}
+		;
 
 		return clickCopy;
 	}
 
-	private static MouseInputListener getMouseReader() {
+	private MouseInputListener getMouseReader() {
 		MouseInputListener listener = new MouseInputListener() {
 			public void mouseClicked(MouseEvent e) {
-				INSTANCE.gridClick = drawingBoard.getMouseClick(e);
+				gridClick = drawingBoard.getMouseClick(e);
 			}
 
 			public void mouseEntered(MouseEvent e) {

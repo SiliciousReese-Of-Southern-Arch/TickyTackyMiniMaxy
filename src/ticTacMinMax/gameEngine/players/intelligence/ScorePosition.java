@@ -1,6 +1,7 @@
-package ticTacMinMax.intelligence;
+package ticTacMinMax.gameEngine.players.intelligence;
 
-import ticTacMinMax.board.twoDimensional.Board2D;
+import ticTacMinMax.gameEngine.board.twoDimensional.Board2D;
+import ticTacMinMax.gameEngine.board.twoDimensional.BoardLocation2D;
 import ticTacMinMax.stream.StreamManager;
 
 class ScorePosition implements Runnable {
@@ -8,9 +9,9 @@ class ScorePosition implements Runnable {
 	// to make. This number greatly impacts the runtime. The max number depends
 	// on your java implementation, but I would advise against anything higher
 	// than 4. This needs to be at least 3 to work correctly on a 3 by 3 board.
-	public static final int MAX_DEPTH =
-			Integer.parseInt(
-					StreamManager.getInstance().getSetting("Max_Search_Depth"));
+	public static final int MAX_DEPTH = Integer.parseInt(StreamManager
+			.getInstance().getRawConfig("Max_Search_Depth"));
+
 	private int depth;
 	private int player;
 	private int column;
@@ -29,13 +30,14 @@ class ScorePosition implements Runnable {
 		score = 0;
 	}
 
-	/**
-	 * Store the score of the given row and column to determine the point value.
-	 */
+	/** Store the score of the given row and column to determine the point value. */
 	@Override
 	public void run() {
 		boolean win = false;
-		testBoard.placePieceAt(column, row, player);
+
+		BoardLocation2D loc = new BoardLocation2D(column, row);
+
+		testBoard.placePiece(loc, player);
 
 		// If the player can win this turn score = 1.
 		if (testBoard.isGameWon()) {
@@ -51,15 +53,17 @@ class ScorePosition implements Runnable {
 
 			// If the opponent can win this turn score = -1.
 			for (int i = 0; i < Board2D.BOARD_DIMENSION && !win; i++)
-				for (int j = 0; j < Board2D.BOARD_DIMENSION && !win; j++)
+				for (int j = 0; j < Board2D.BOARD_DIMENSION && !win; j++) {
+					loc = new BoardLocation2D(i, j);
 					if (!testBoard.isPiecePlacedAt(i, j)) {
-						testBoard.placePieceAt(i, j, nextPlayer);
+						testBoard.placePiece(loc, nextPlayer);
 						if (testBoard.isGameWon()) {
 							win = true;
 							score = -2;
 						}
 						testBoard.removePieceAt(i, j);
 					}
+				}
 
 			// If there is no winner and there is an available space that has
 			// not already been tested when looking for the opponents move, test
@@ -68,9 +72,8 @@ class ScorePosition implements Runnable {
 					&& nextDepth <= MAX_DEPTH) {
 				TestBoard recursiveTestBoard = new TestBoard(testBoard);
 
-				BestMoveFinder recursiveTestCase =
-						new BestMoveFinder(recursiveTestBoard, nextPlayer,
-								nextDepth);
+				BestMoveFinder recursiveTestCase = new BestMoveFinder(
+						recursiveTestBoard, nextPlayer, nextDepth);
 
 				// Invert the score because the opponent is playing.
 				score = recursiveTestCase.getBestScore() * -1;

@@ -1,32 +1,40 @@
-package ticTacMinMax;
+package ticTacMinMax.gameEngine.players;
 
-import ticTacMinMax.board.twoDimensional.Board2D;
+import ticTacMinMax.gameEngine.GameManager;
+import ticTacMinMax.gameEngine.board.twoDimensional.Board2D;
+import ticTacMinMax.gameEngine.board.twoDimensional.BoardLocation2D;
+import ticTacMinMax.userInterface.SwingManager;
 import ticTacMinMax.userInterface.contentPanes.TicTacToePane;
 
 public class HumanPlayer extends TicTacToePlayer {
-	private static final Board2D gameBoard2D = Board2D.getGameBoard();
+	private static final Board2D gameBoard2D = GameManager.getInstance()
+			.getBoard();
 
 	public HumanPlayer(int turnOrder) {
 		super(turnOrder);
 	}
 
 	@Override
-	public void takeTurn() {
+	public BoardLocation2D getMove() {
 		// Get the grid coordinates to place the piece at.
 		int[] coordinates = getPlayerInput();
 
-		gameBoard.placePieceAt(coordinates[0], coordinates[1], playerOrder);
+		BoardLocation2D loc = new BoardLocation2D(coordinates[0],
+				coordinates[1]);
+
+		gameBoard.placePiece(loc, playerOrder);
+		
+		return null;
 	}
 
-	/**
-	 * Get coordinates from standard in. This does error checking internally so
+	/** Get coordinates from standard in. This does error checking internally so
 	 * the output will be a valid location on the board which the player is
 	 * allowed to place a piece at.
 	 * 
-	 * @return The column and row the player placed the piece at.
-	 */
+	 * @return The column and row the player placed the piece at. */
 	private int[] getPlayerInput() {
-		TicTacToePane windowPane = TicTacToePane.getInstance();
+		TicTacToePane windowPane = SwingManager.getInstance().getFrame()
+				.getContentPain();
 
 		int[] coordinates = new int[2];
 
@@ -49,7 +57,7 @@ public class HumanPlayer extends TicTacToePlayer {
 
 	@Override
 	public void defeat() {
-		System.out.println(
-				"Player " + playerOrder + " was beat by a superior player...");
+		System.out.println("Player " + playerOrder
+				+ " was beat by a superior player...");
 	}
 }
