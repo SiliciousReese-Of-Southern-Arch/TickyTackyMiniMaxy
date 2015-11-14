@@ -14,7 +14,11 @@ public class GameManager {
 	private Board2D board;
 
 	private GameManager() {
-		board = new Board2D();
+		try {
+			board = new Board2D();
+		} catch (Exception e) {
+			e.getCause().printStackTrace();
+		}
 	}
 
 	public static GameManager getInstance() {

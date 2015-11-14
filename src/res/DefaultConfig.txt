@@ -1,8 +1,6 @@
 # A currently unimplemented file for configuring game play variables
 # Game play parameters. These can (not currently implemented) be edited in game.
 Player_1_Human=true
-player_2_Human=false
+Player_2_Human=false
 3DBoard=false
-Max_Search_Depth=10
 Board_Size=3
-Max_Search_Time=30000

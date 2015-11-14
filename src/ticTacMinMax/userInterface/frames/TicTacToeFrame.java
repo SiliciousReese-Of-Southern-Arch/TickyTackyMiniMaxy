@@ -15,14 +15,14 @@ public class TicTacToeFrame extends JFrame {
 	private TicTacToePane contentPane;
 
 	public TicTacToeFrame() throws HeadlessException {
-		// Create Frame with title.
+		/* Create Frame with title. */
 		super("Tic Tac Toe");
 
-		// TODO Make size configurable
+		/* TODO Make size configurable */
 		setSize(500, 500);
 		setResizable(false);
 
-		// The Window listener stop the program when the window is disposed.
+		/* The Window listener stop the program when the window is disposed. */
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		WindowCloser theWatcher = new WindowCloser();
 		addWindowListener(theWatcher);
@@ -39,9 +39,7 @@ public class TicTacToeFrame extends JFrame {
 	}
 }
 
-/**
- * Separate Class to handle window closing.
- */
+/** Separate Class to handle window closing. */
 class WindowCloser implements WindowListener {
 
 	protected WindowCloser() {

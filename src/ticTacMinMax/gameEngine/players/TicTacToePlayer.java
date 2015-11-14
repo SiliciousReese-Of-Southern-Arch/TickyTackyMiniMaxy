@@ -21,7 +21,6 @@ public abstract class TicTacToePlayer {
 	 * 
 	 * @param playerNumber
 	 *            The number of the player, should be either 1 or 2.
-	 * @return TODO
 	 * @return the position the player would like to place a piece at. */
 	public abstract BoardLocation2D getMove();
 

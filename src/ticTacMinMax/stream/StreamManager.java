@@ -132,25 +132,44 @@ public class StreamManager {
 		return config.getProperty(settingName);
 	}
 
+	/** Parse a boolean from the setting.
+	 * 
+	 * @param settingName
+	 *            The name of the setting in the config file.
+	 * @return A boolean representing the setting. Returns false if the setting
+	 *         is not defined or does not represent a boolean true. */
 	public boolean getBool(String settingName) {
 		return Boolean.parseBoolean(config.getProperty(settingName));
 	}
 
-	/** @param characterImage
-	 *            The character representing which part of the symbol image to
-	 *            return. This should either be the x or o character
-	 * @return The part of the symbol image specified by item. */
-	public BufferedImage getSubimage(char characterImage) {
-		char PLAYER_1_TOKEN = 'O';
-		char PLAYER_2_TOKEN = 'X';
-		BufferedImage image = null;
+	/** Parse an int from the setting in config.
+	 * 
+	 * @param settingName
+	 *            The name of the setting in the config file.
+	 * @return An integer representing the setting.
+	 * @throws NumberFormatException
+	 *             If the setting can not be converted to an int. */
+	public int getInt(String settingName) {
+		return Integer.parseInt(config.getProperty(settingName));
+	}
 
-		if (characterImage == PLAYER_1_TOKEN)
-			image = symbols.getXImage();
-		else if (characterImage == PLAYER_2_TOKEN)
-			image = symbols.getOImage();
+	/** Parse an int from the setting in config.
+	 * 
+	 * @param settingName
+	 *            The name of the setting in the config file.
+	 * @return An integer representing the setting.
+	 * @throws NumberFormatException
+	 *             If the setting can not be converted to an int. */
+	public long getLong(String settingName) {
+		return Long.parseLong(config.getProperty(settingName));
+	}
 
-		return image;
+	public BufferedImage getX() {
+		return symbols.getXImage();
+	}
+
+	public BufferedImage getO() {
+		return symbols.getOImage();
 	}
 
 	private SymbolImage getSymbolImage() {

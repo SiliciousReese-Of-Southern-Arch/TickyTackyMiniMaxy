@@ -4,34 +4,21 @@ import java.io.IOException;
 
 import ticTacMinMax.gameEngine.GameManager;
 import ticTacMinMax.stream.StreamManager;
-import ticTacMinMax.userInterface.SwingManager;
 
 /** Main class for Tic-Tac-Toe game.
  * 
  * @author SiliciousReese
- * @version 2.1-beta */
+ * @version 2.2-beta */
+
 public class TicTacToe {
 	public static final int SUCCESS_EXIT_CODE = 0;
-	public static final int FAILURE_EXIT_CODE = -1;
-
-	private static StreamManager streams;
-	@SuppressWarnings("unused")
-	private static SwingManager gui;
-	private static GameManager game;
+	public static final int FAILURE_EXIT_CODE = 1;
 
 	/** Start a game of Tic Tac Toe. */
 	public static void main(String[] args) {
 		System.out.println("Starting game...");
 
-		streams = StreamManager.getInstance();
-		gui = SwingManager.getInstance();
-		/* TODO Multi-threading is complicated... */
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		game = GameManager.getInstance();
+		GameManager game = GameManager.getInstance();
 
 		game.play();
 
@@ -45,6 +32,7 @@ public class TicTacToe {
 	 *            True if there was a problem. */
 	public static void exit(boolean error) {
 		int exitCode = SUCCESS_EXIT_CODE;
+		StreamManager streams = StreamManager.getInstance();
 
 		try {
 			streams.closeAllStreams();

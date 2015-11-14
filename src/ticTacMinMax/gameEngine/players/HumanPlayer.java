@@ -23,7 +23,7 @@ public class HumanPlayer extends TicTacToePlayer {
 				coordinates[1]);
 
 		gameBoard.placePiece(loc, playerOrder);
-		
+
 		return null;
 	}
 
@@ -43,9 +43,11 @@ public class HumanPlayer extends TicTacToePlayer {
 		// TODO Add warning if the piece can not be placed because a piece is
 		// already there.
 		windowPane.repaint();
+		BoardLocation2D loc;
 		do {
 			coordinates = windowPane.getSelection();
-		} while (gameBoard2D.isPiecePlacedAt(coordinates[0], coordinates[1]));
+			loc = new BoardLocation2D(coordinates[0], coordinates[1]);
+		} while (gameBoard2D.isPieceAt(loc));
 
 		return coordinates;
 	}

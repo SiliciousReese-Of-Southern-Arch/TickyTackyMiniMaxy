@@ -1,5 +1,6 @@
 package ticTacMinMax.gameEngine.players.intelligence;
 
+import ticTacMinMax.gameEngine.GameManager;
 import ticTacMinMax.gameEngine.board.twoDimensional.BoardLocation2D;
 import ticTacMinMax.gameEngine.players.TicTacToePlayer;
 
@@ -11,16 +12,11 @@ public class Max extends TicTacToePlayer {
 
 	@Override
 	public BoardLocation2D getMove() {
-		// TODO Determine if this really needs the playerOrder
-		BestMoveFinder moveFinder = new BestMoveFinder(new TestBoard(),
-				playerOrder, 0);
-
-		int[] point = moveFinder.getBestPoint();
-
-		BoardLocation2D loc = new BoardLocation2D(point[0], point[1]);
+		BoardLocation2D loc = BestMoveFinder.getBestPoint(GameManager
+				.getInstance().getBoard(), playerOrder);
 
 		gameBoard.placePiece(loc, playerOrder);
-		return null;
+		return loc;
 	}
 
 	@Override
@@ -30,8 +26,8 @@ public class Max extends TicTacToePlayer {
 
 	@Override
 	public void defeat() {
-		// This is really a bug in the program because the algorithm should only
-		// ever win or tie, never lose.
+		/* This is really a bug in the program because the algorithm should only
+		 * ever win or tie, never lose. */
 		System.out.println("3RR0R... HUMAN VICTORY");
 	}
 }

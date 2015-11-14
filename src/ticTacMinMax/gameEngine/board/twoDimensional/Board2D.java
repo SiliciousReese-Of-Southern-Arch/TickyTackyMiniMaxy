@@ -8,15 +8,22 @@ import ticTacMinMax.userInterface.SwingManager;
 import ticTacMinMax.userInterface.contentPanes.TicTacToePane;
 
 public class Board2D extends GameBoard {
-	// Board constants
-	// This must be a positive integer. It is usually three.
-	public static final int BOARD_DIMENSION = Integer.parseInt(StreamManager
-			.getInstance().getRawConfig("Board_Size"));
+	/* TODO Add current player as part of board. It belongs here because a few
+	 * parts of the code currently require a needing to know, and the current
+	 * player is defined by the last player to place a piece, and it should
+	 * always start with the same player. */
+
+	/* Board constants */
+
+	/* This must be a positive integer. It is usually three. */
+	public static final int BOARD_DIMENSION = StreamManager.getInstance()
+			.getInt("Board_Size");
 	public static final int BOARD_SIZE = BOARD_DIMENSION * BOARD_DIMENSION;
 	/* TODO Get rid of tokens, board is graphical and don't need none of this
 	 * token business. */
-	public static final char PLAYER_1_TOKEN = 'X';
-	public static final char PLAYER_2_TOKEN = 'O';
+	private static final char PLAYER_1_TOKEN = 'X';
+	private static final char PLAYER_2_TOKEN = 'O';
+	@Deprecated
 	public static final char BLANK_SPACE = '_';
 
 	private static TicTacToePane boardGUI = SwingManager.getInstance()
@@ -26,7 +33,7 @@ public class Board2D extends GameBoard {
 
 	// The variable to store the board in.
 	// TODO Use byte array to save space and faster calculations.
-	public char[][] board;
+	private char[][] board;
 
 	/** A TicTacToe board.
 	 * 
@@ -39,6 +46,10 @@ public class Board2D extends GameBoard {
 		for (int i = 0; i < BOARD_DIMENSION; i++)
 			for (int j = 0; j < BOARD_DIMENSION; j++)
 				board[i][j] = BLANK_SPACE;
+	}
+
+	public Board2D(Board2D parent) {
+		board = parent.getCopyOfBoard();
 	}
 
 	/** place a piece at the given location on the board.
@@ -63,30 +74,53 @@ public class Board2D extends GameBoard {
 		boardGUI.repaint();
 	}
 
+	/** place a piece at the given location on the board.
+	 * 
+	 * @param playerNumber
+	 *            Either player one or player two. This determines the symbol to
+	 *            place in the board array.
+	 * @param repaint
+	 *            True if you want to force the board to repaint the screen
+	 * @throws InvalidMoveExeption
+	 *             If the location is already taken. */
+	public void placePiece(BoardLocation2D loc, int playerNumber,
+			boolean repaint) {
+		int row = loc.row();
+		int column = loc.column();
+		if (board[column][row] == BLANK_SPACE) {
+			if (playerNumber == 1)
+				board[column][row] = PLAYER_1_TOKEN;
+			else
+				board[column][row] = PLAYER_2_TOKEN;
+		} else
+			throw new UnsupportedOperationException("Location not empty."
+					+ board[column][row] + " placed at " + column + ", " + row);
+		if (repaint)
+			boardGUI.repaint();
+	}
+
 	/** Determine if a piece is placed at a given location.
 	 * 
-	 * @param column
-	 *            The column number to place the piece at. The columns start at
-	 *            one.
-	 * @param row
-	 *            The row number to place the piece at. The rows start at one.
 	 * @return True if there is already a piece placed at the given location. */
-	public boolean isPiecePlacedAt(int column, int row) {
-		return board[column][row] != BLANK_SPACE;
+	public boolean isPieceAt(BoardLocation2D loc) {
+		return board[loc.column()][loc.row()] != BLANK_SPACE;
 	}
 
 	/** Determine if a specific player's piece is placed at the given location.
 	 * 
-	 * @param column
-	 *            The column number to place the piece at. The columns start at
-	 *            one.
-	 * @param row
-	 *            The row number to place the piece at. The rows start at one.
 	 * @param piece
 	 *            The players piece to check for.
 	 * @return True if the given piece is at the given location. */
-	public boolean getPieceAt(int column, int row, char piece) {
-		return board[column][row] == piece;
+	public boolean isPieceAt(BoardLocation2D loc, char piece) {
+		return board[loc.column()][loc.row()] == piece;
+	}
+
+	public boolean isPlayerXAt(BoardLocation2D loc) {
+		return board[loc.column()][loc.row()] == PLAYER_1_TOKEN;
+	}
+
+	public boolean isPlayerOAt(BoardLocation2D loc) {
+		return board[loc.column()][loc.row()] == PLAYER_2_TOKEN;
 	}
 
 	/** @return True if there is a winner. This can easily be used to determine
@@ -97,7 +131,7 @@ public class Board2D extends GameBoard {
 		return (checkColumns() || checkRows() || checkDiagonals());
 	}
 
-	/** Check the each column, called by the isGameWon() method.
+	/** Check each column, called by the isGameWon() method.
 	 * 
 	 * @return True if any of the columns have all of the same player tokens. */
 	private boolean checkColumns() {

@@ -39,9 +39,9 @@ public class GraphicalBoard {
 		boardSpaces = createTiles(boardWidth);
 		fillTiles(g);
 
-		// TODO Figure out symbols
-		BufferedImage xImage = streams.getSubimage('X');
-		BufferedImage oImage = streams.getSubimage('O');
+		BufferedImage xImage = streams.getX();
+		BufferedImage oImage = streams.getO();
+
 		drawSymbols(g, xImage, oImage);
 	}
 
@@ -162,13 +162,9 @@ public class GraphicalBoard {
 			for (int j = 0; j < Board2D.BOARD_DIMENSION; j++) {
 				// Determine whether either player has a piece placed at the
 				// location.
-				boolean player1Piece = board.getPieceAt(i, j,
-						Board2D.PLAYER_1_TOKEN);
-				boolean player2Piece = board.getPieceAt(i, j,
-						Board2D.PLAYER_2_TOKEN);
+				BoardLocation2D loc = new BoardLocation2D(i, j);
 
-				// TODO Check if fixing the points fixes this.
-				if (player1Piece) {
+				if (board.isPlayerXAt(loc)) {
 					int x1 = boardSpaces[i][j].x;
 					int y1 = boardSpaces[i][j].y;
 					int x2 = boardSpaces[i][j].x + boardSpaces[i][j].width;
@@ -176,7 +172,7 @@ public class GraphicalBoard {
 
 					g.drawImage(xImage, x1, y1, x2, y2, 0, 0,
 							xImage.getWidth(), xImage.getHeight(), null);
-				} else if (player2Piece) {
+				} else if (board.isPlayerOAt(loc)) {
 					int x1 = boardSpaces[i][j].x;
 					int y1 = boardSpaces[i][j].y;
 					int x2 = boardSpaces[i][j].x + boardSpaces[i][j].width;

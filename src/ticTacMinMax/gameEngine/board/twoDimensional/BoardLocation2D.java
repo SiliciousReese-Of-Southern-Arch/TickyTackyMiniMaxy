@@ -11,7 +11,7 @@ public class BoardLocation2D {
 	public BoardLocation2D(int column, int row) {
 		col = column;
 		ro = row;
-		if (!isValid())
+		if (col > Board2D.BOARD_DIMENSION || ro > Board2D.BOARD_DIMENSION)
 			throw new ArrayIndexOutOfBoundsException(
 					"The location is outside of the board");
 	}
@@ -22,14 +22,5 @@ public class BoardLocation2D {
 
 	public int row() {
 		return ro;
-	}
-
-	private boolean isValid() {
-		boolean valid = true;
-		/* The highest index of the board array */
-		int max = Board2D.BOARD_DIMENSION - 1;
-		if (col > max || ro > max)
-			valid = false;
-		return valid;
 	}
 }
