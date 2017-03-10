@@ -17,11 +17,13 @@ public abstract class TicTacToePlayer {
 		gameBoard = GameManager.getInstance().getBoard();
 	}
 
-	/** Take a turn
+	/**
+	 * Take a turn
 	 * 
 	 * @param playerNumber
 	 *            The number of the player, should be either 1 or 2.
-	 * @return the position the player would like to place a piece at. */
+	 * @return the position the player would like to place a piece at.
+	 */
 	public abstract BoardLocation2D getMove();
 
 	/** Perform game over actions on win. */

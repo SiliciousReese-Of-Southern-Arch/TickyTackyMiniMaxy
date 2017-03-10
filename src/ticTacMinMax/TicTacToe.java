@@ -5,10 +5,12 @@ import java.io.IOException;
 import ticTacMinMax.gameEngine.GameManager;
 import ticTacMinMax.stream.StreamManager;
 
-/** Main class for Tic-Tac-Toe game.
+/**
+ * Main class for Tic-Tac-Toe game.
  * 
  * @author SiliciousReese
- * @version 2.2-beta */
+ * @version 2.2-beta
+ */
 
 public class TicTacToe {
 	public static final int SUCCESS_EXIT_CODE = 0;
@@ -25,11 +27,13 @@ public class TicTacToe {
 		exit(false);
 	}
 
-	/** Cleans up and exits the program. The program is exited with a failure
+	/**
+	 * Cleans up and exits the program. The program is exited with a failure
 	 * code if error is true.
 	 * 
 	 * @param error
-	 *            True if there was a problem. */
+	 *            True if there was a problem.
+	 */
 	public static void exit(boolean error) {
 		int exitCode = SUCCESS_EXIT_CODE;
 		StreamManager streams = StreamManager.getInstance();

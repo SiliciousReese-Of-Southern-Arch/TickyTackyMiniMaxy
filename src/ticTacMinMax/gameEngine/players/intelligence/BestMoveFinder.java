@@ -4,9 +4,11 @@ import ticTacMinMax.gameEngine.board.twoDimensional.Board2D;
 import ticTacMinMax.gameEngine.board.twoDimensional.BoardLocation2D;
 
 public class BestMoveFinder {
-	/* TODO Create a way to limit the recursion depth. This will prevent a
+	/*
+	 * TODO Create a way to limit the recursion depth. This will prevent a
 	 * possible memory bounds exception and prevent the algorithm from spending
-	 * way too much time trying to get a solution at the start of the game. */
+	 * way too much time trying to get a solution at the start of the game.
+	 */
 
 	/* Constants for giving value to various outcomes */
 	/** Highest score */
@@ -16,10 +18,12 @@ public class BestMoveFinder {
 	/** Initial value, must be the lowest possible score. */
 	public static final int UNDEFINED = -2 * WIN_SCORE;
 
-	/** @param startingBoard
+	/**
+	 * @param startingBoard
 	 *            The board to find the best move for.
 	 * @return The optimal move for the given board, or the top-right location
-	 *         if the board is full. */
+	 *         if the board is full.
+	 */
 	public static BoardLocation2D getBestPoint(Board2D startingBoard,
 			int currentPlayer) {
 		/* Start with undefined so that any valid move will be higher. */
@@ -27,16 +31,21 @@ public class BestMoveFinder {
 		int currentScore;
 		BoardLocation2D loc = new BoardLocation2D(0, 0);
 
-		/* for each board location place a piece, and if the score is higher
-		 * than the previous high, save it. Exits early if the score is a win. */
-		for (int i = 0; i < Board2D.BOARD_DIMENSION && highScore < WIN_SCORE; i++)
+		/*
+		 * for each board location place a piece, and if the score is higher
+		 * than the previous high, save it. Exits early if the score is a win.
+		 */
+		for (int i = 0; i < Board2D.BOARD_DIMENSION
+				&& highScore < WIN_SCORE; i++)
 			for (int j = 0; j < Board2D.BOARD_DIMENSION
 					&& highScore < WIN_SCORE; j++) {
 				currentScore = UNDEFINED;
 				BoardLocation2D newPiece = new BoardLocation2D(i, j);
 
-				/* Get the score for the current location. Score is defaulted to
-				 * UNDEFINED if there is already a piece at the location. */
+				/*
+				 * Get the score for the current location. Score is defaulted to
+				 * UNDEFINED if there is already a piece at the location.
+				 */
 				if (!startingBoard.isPieceAt(newPiece)) {
 					Board2D testBoard = new Board2D(startingBoard);
 					currentScore = TIE_SCORE;
@@ -46,15 +55,19 @@ public class BestMoveFinder {
 					if (testBoard.isGameWon())
 						currentScore = WIN_SCORE;
 					else if (!testBoard.isFull())
-						/* Place piece as next player. If they win invert the
-						 * score */
+						/*
+						 * Place piece as next player. If they win invert the
+						 * score
+						 */
 						currentScore = getBestScore(testBoard,
 								-currentPlayer + 1) * -1;
 				}
 
 				if (currentScore > highScore) {
-					/* Saves the highest scoring location. This will always run
-					 * once to ensure the result is an empty location */
+					/*
+					 * Saves the highest scoring location. This will always run
+					 * once to ensure the result is an empty location
+					 */
 					highScore = currentScore;
 					loc = new BoardLocation2D(i, j);
 				}
@@ -64,19 +77,22 @@ public class BestMoveFinder {
 		return loc;
 	}
 
-	/** @param board
+	/**
+	 * @param board
 	 *            Board to place piece at. A copy of the board is used so it
 	 *            will not be modified inside the method.
 	 * @param player
 	 *            The current player.
-	 * @return The highest score or TIE__SCORE if board is full. */
+	 * @return The highest score or TIE__SCORE if board is full.
+	 */
 	private static int getBestScore(Board2D board, int player) {
 		/* Works similarly to the getBestPoint() method. */
 
 		int newScore = TIE_SCORE;
 		int highestScore = UNDEFINED;
 
-		for (int i = 0; i < Board2D.BOARD_DIMENSION && highestScore < WIN_SCORE; i++)
+		for (int i = 0; i < Board2D.BOARD_DIMENSION
+				&& highestScore < WIN_SCORE; i++)
 			for (int j = 0; j < Board2D.BOARD_DIMENSION
 					&& highestScore < WIN_SCORE; j++)
 				if (!board.isPieceAt(new BoardLocation2D(i, j))) {

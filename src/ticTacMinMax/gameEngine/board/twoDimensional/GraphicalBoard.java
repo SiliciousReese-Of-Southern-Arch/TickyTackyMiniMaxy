@@ -24,10 +24,12 @@ public class GraphicalBoard {
 	/** The rectangles for the spaces where the x's and o's. */
 	private Rectangle[][] boardSpaces;
 
-	/** Draws a hologram of a tic tac toe board that will give you cancer.
+	/**
+	 * Draws a hologram of a tic tac toe board that will give you cancer.
 	 * 
 	 * @param g
-	 *            The graphics object from a Swing containers paint method. */
+	 *            The graphics object from a Swing containers paint method.
+	 */
 	public void drawBoard(Graphics g) {
 		int boardWidth = g.getClipBounds().width;
 
@@ -64,15 +66,18 @@ public class GraphicalBoard {
 		return gridLocation;
 	}
 
-	/** @param length
+	/**
+	 * @param length
 	 *            The length of the board or graphics object the rectangles will
 	 *            be drawn over. This will be the length of the longest sides of
 	 *            each rectangle. Not to be confused with the board dimension.
-	 * @return Creates each rectangle for the grid bars of the tic tac board. */
+	 * @return Creates each rectangle for the grid bars of the tic tac board.
+	 */
 	private Rectangle[][] createGrid(int length) {
 		// 2 dimensions (height and width) and 1 less bar per dimension than
 		// there are squares.
-		Rectangle[][] rectangles = new Rectangle[2][Board2D.BOARD_DIMENSION - 1];
+		Rectangle[][] rectangles = new Rectangle[2][Board2D.BOARD_DIMENSION
+				- 1];
 
 		// Create the rectangle array.
 		for (int i = 0; i < Board2D.BOARD_DIMENSION - 1; i++) {
@@ -95,11 +100,13 @@ public class GraphicalBoard {
 		return rectangles;
 	}
 
-	/** Fills the given rectangle over a graphics object with the color from the
+	/**
+	 * Fills the given rectangle over a graphics object with the color from the
 	 * grid color field.
 	 * 
 	 * @param g
-	 *            The graphics object to draw on. */
+	 *            The graphics object to draw on.
+	 */
 	private void fillGrid(Graphics g) {
 		g.setColor(GRID_COLOR);
 
@@ -170,16 +177,16 @@ public class GraphicalBoard {
 					int x2 = boardSpaces[i][j].x + boardSpaces[i][j].width;
 					int y2 = boardSpaces[i][j].y + boardSpaces[i][j].height;
 
-					g.drawImage(xImage, x1, y1, x2, y2, 0, 0,
-							xImage.getWidth(), xImage.getHeight(), null);
+					g.drawImage(xImage, x1, y1, x2, y2, 0, 0, xImage.getWidth(),
+							xImage.getHeight(), null);
 				} else if (board.isPlayerOAt(loc)) {
 					int x1 = boardSpaces[i][j].x;
 					int y1 = boardSpaces[i][j].y;
 					int x2 = boardSpaces[i][j].x + boardSpaces[i][j].width;
 					int y2 = boardSpaces[i][j].y + boardSpaces[i][j].height;
 
-					g.drawImage(oImage, x1, y1, x2, y2, 0, 0,
-							oImage.getWidth(), oImage.getHeight(), null);
+					g.drawImage(oImage, x1, y1, x2, y2, 0, 0, oImage.getWidth(),
+							oImage.getHeight(), null);
 				}
 			}
 		}

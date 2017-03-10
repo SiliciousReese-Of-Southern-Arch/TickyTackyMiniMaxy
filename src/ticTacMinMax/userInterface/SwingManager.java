@@ -36,8 +36,10 @@ public class SwingManager {
 		return INSTANCE;
 	}
 
-	/** Temporary method while preparing to create API for entire TicTacToeFrame
-	 * from this class. */
+	/**
+	 * Temporary method while preparing to create API for entire TicTacToeFrame
+	 * from this class.
+	 */
 	public TicTacToeFrame getFrame() {
 		while (frame == null) {
 			System.out.println("Waiting " + SLEEP_WAIT_MILLIS

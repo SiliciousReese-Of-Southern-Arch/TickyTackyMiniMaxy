@@ -25,7 +25,9 @@ public class GameManager {
 		return INSTANCE;
 	}
 
-	/** Temporary method to before force all board management tasks through this. */
+	/**
+	 * Temporary method to before force all board management tasks through this.
+	 */
 	public Board2D getBoard() {
 		return board;
 	}
@@ -38,13 +40,17 @@ public class GameManager {
 			/* Run the game. TODO The game should have it's own thread. */
 			TicTacToePlayer[] players = getPlayers();
 			boolean gameOver = false;
-			/* The locations in the array of the two players. They alternate at
-			 * the beginning of the loop. */
+			/*
+			 * The locations in the array of the two players. They alternate at
+			 * the beginning of the loop.
+			 */
 			int curPlayer = 1;
 			int nextPlayer = 0;
 
-			/* Game loop. Continues until there is a winner or the board is
-			 * full. */
+			/*
+			 * Game loop. Continues until there is a winner or the board is
+			 * full.
+			 */
 			while (!gameOver) {
 				curPlayer = nextPlayer;
 				/* Use algebra to alternate between 1 and 0. */

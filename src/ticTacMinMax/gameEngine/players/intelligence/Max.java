@@ -12,8 +12,8 @@ public class Max extends TicTacToePlayer {
 
 	@Override
 	public BoardLocation2D getMove() {
-		BoardLocation2D loc = BestMoveFinder.getBestPoint(GameManager
-				.getInstance().getBoard(), playerOrder);
+		BoardLocation2D loc = BestMoveFinder.getBestPoint(
+				GameManager.getInstance().getBoard(), playerOrder);
 
 		gameBoard.placePiece(loc, playerOrder);
 		return loc;
@@ -26,8 +26,10 @@ public class Max extends TicTacToePlayer {
 
 	@Override
 	public void defeat() {
-		/* This is really a bug in the program because the algorithm should only
-		 * ever win or tie, never lose. */
+		/*
+		 * This is really a bug in the program because the algorithm should only
+		 * ever win or tie, never lose.
+		 */
 		System.out.println("3RR0R... HUMAN VICTORY");
 	}
 }

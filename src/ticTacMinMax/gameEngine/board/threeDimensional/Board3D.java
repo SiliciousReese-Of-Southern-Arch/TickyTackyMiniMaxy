@@ -8,8 +8,8 @@ import ticTacMinMax.stream.StreamManager;
 public class Board3D extends GameBoard {
 	// Board constants
 	// This must be a positive integer. It is usually three.
-	public static int BOARD_LENGTH = Integer.parseInt(StreamManager
-			.getInstance().getRawConfig("Board_Size"));
+	public static int BOARD_LENGTH = Integer
+			.parseInt(StreamManager.getInstance().getRawConfig("Board_Size"));
 	public static int BOARD_SIZE = BOARD_LENGTH * BOARD_LENGTH * BOARD_LENGTH;
 	public static final char PLAYER_1_TOKEN = "O".charAt(0);
 	public static final char PLAYER_2_TOKEN = "X".charAt(0);
@@ -18,11 +18,13 @@ public class Board3D extends GameBoard {
 	// The variable to store the board in.
 	protected char[][][] board;
 
-	/** A TicTacToe board.
+	/**
+	 * A TicTacToe board.
 	 * 
 	 * @throws InvalidBoardToken
 	 *             Throws an exception if the board tokens initialize
-	 *             incorrectly. */
+	 *             incorrectly.
+	 */
 	public Board3D() {
 		board = initializeBoard();
 	}
@@ -39,7 +41,8 @@ public class Board3D extends GameBoard {
 		return newBoard;
 	}
 
-	/** place a piece at the given location on the board
+	/**
+	 * place a piece at the given location on the board
 	 * 
 	 * @param column
 	 *            The column number to place the piece at. The columns start at
@@ -48,7 +51,8 @@ public class Board3D extends GameBoard {
 	 *            The row number to place the piece at. The rows start at one.
 	 * @param playerNumber
 	 *            Either player one or player two. This determines the symbol to
-	 *            place in the board array. */
+	 *            place in the board array.
+	 */
 	public void placePieceAt(int column, int row, int aisle, int playerNumber) {
 		if (playerNumber == 1)
 			board[column][row][aisle] = PLAYER_1_TOKEN;
@@ -56,21 +60,25 @@ public class Board3D extends GameBoard {
 			board[column][row][aisle] = PLAYER_2_TOKEN;
 	}
 
-	/** Determine if a piece is placed at a given location.
+	/**
+	 * Determine if a piece is placed at a given location.
 	 * 
 	 * @param column
 	 *            The column number to place the piece at. The columns start at
 	 *            one.
 	 * @param row
 	 *            The row number to place the piece at. The rows start at one.
-	 * @return True if there is already a piece placed at the given location. */
+	 * @return True if there is already a piece placed at the given location.
+	 */
 	public boolean isPiecePlacedAt(int column, int row, int aisle) {
 		return board[column][row][aisle] != BLANK_SPACE;
 	}
 
-	/** @return True if there is a winner. This can easily be used to determine
+	/**
+	 * @return True if there is a winner. This can easily be used to determine
 	 *         the winner by running this check immediately when a player places
-	 *         piece because only that play can be the winner. */
+	 *         piece because only that play can be the winner.
+	 */
 	public boolean isGameWon() {
 		// Use smaller methods to check each of the winning conditions.
 		// TODO Implementing the 3-D version of this method will truly be a

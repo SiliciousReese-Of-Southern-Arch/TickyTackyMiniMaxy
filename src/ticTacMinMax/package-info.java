@@ -5,4 +5,3 @@
  * @author SiliciosReese
  */
 package ticTacMinMax;
-

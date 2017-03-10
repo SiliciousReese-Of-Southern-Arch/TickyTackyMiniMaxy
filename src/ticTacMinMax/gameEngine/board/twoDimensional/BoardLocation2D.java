@@ -4,10 +4,12 @@ public class BoardLocation2D {
 	private int col;
 	private int ro;
 
-	/** Creates a location for use with the board object and assure validity.
+	/**
+	 * Creates a location for use with the board object and assure validity.
 	 *
 	 * @throws ArrayIndexOutOfBoundsException
-	 *             if the location is not inside of the board. */
+	 *             if the location is not inside of the board.
+	 */
 	public BoardLocation2D(int column, int row) {
 		col = column;
 		ro = row;

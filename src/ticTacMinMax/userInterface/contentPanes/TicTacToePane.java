@@ -45,12 +45,14 @@ public class TicTacToePane extends JDesktopPane {
 			try {
 				Thread.sleep(0, 1);
 			} catch (InterruptedException e) {
-				/* Are there any systems where this could actually happen? A
+				/*
+				 * Are there any systems where this could actually happen? A
 				 * nanosecond of sleep gets interrupted? I can think of a system
 				 * that does not allow sleeping, and immediately interrupts the
 				 * thread, but are there any real life examples of this?
 				 * Seriously, contact me if you have an answer.
-				 * github.com/SiliciousReese. */
+				 * github.com/SiliciousReese.
+				 */
 				System.err.println("Exited early from a NANOSECOND of sleep!");
 				e.printStackTrace();
 			}
@@ -60,8 +62,7 @@ public class TicTacToePane extends JDesktopPane {
 
 			// TODO NEVER USE NULL ASSIGNMENT!!!
 			gridClick = null;
-		}
-		;
+		} ;
 
 		return clickCopy;
 	}

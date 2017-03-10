@@ -27,11 +27,13 @@ public class HumanPlayer extends TicTacToePlayer {
 		return null;
 	}
 
-	/** Get coordinates from standard in. This does error checking internally so
+	/**
+	 * Get coordinates from standard in. This does error checking internally so
 	 * the output will be a valid location on the board which the player is
 	 * allowed to place a piece at.
 	 * 
-	 * @return The column and row the player placed the piece at. */
+	 * @return The column and row the player placed the piece at.
+	 */
 	private int[] getPlayerInput() {
 		TicTacToePane windowPane = SwingManager.getInstance().getFrame()
 				.getContentPain();
@@ -59,7 +61,7 @@ public class HumanPlayer extends TicTacToePlayer {
 
 	@Override
 	public void defeat() {
-		System.out.println("Player " + playerOrder
-				+ " was beat by a superior player...");
+		System.out.println(
+				"Player " + playerOrder + " was beat by a superior player...");
 	}
 }
