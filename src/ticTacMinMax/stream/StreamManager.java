@@ -24,8 +24,10 @@ public class StreamManager {
 
 	private static final String CONFIG_FILE_NAME = "DefaultConfig.txt";
 
-	/** True if the program is running from inside a jar file. This is used to
-	 * make sure the compressed data is handled correctly. */
+	/**
+	 * True if the program is running from inside a jar file. This is used to
+	 * make sure the compressed data is handled correctly.
+	 */
 	private boolean runFromJar;
 
 	// The folder where resource files are located inside the source directory.
@@ -42,11 +44,9 @@ public class StreamManager {
 	private HashSet<Closeable> streams;
 
 	private StreamManager() {
-		gameFolder = Paths.get(System.getProperties().getProperty("user.dir"))
-				.resolve("src");
 
-		runningFromFolder = Paths.get(
-				System.getProperties().getProperty("java.class.path"))
+		runningFromFolder = Paths
+				.get(System.getProperties().getProperty("java.class.path"))
 				.toAbsolutePath();
 		runFromJar = isJar(runningFromFolder);
 
@@ -54,8 +54,9 @@ public class StreamManager {
 
 		logFile = getLog();
 
-		Path configLocation = gameFolder.resolve("res").resolve(
-				CONFIG_FILE_NAME);
+		Path configLocation = Paths
+				.get(System.getProperties().getProperty("user.dir"))
+				.resolve("res").resolve(CONFIG_FILE_NAME);
 		try {
 			config = getConfig(configLocation);
 		} catch (IOException e) {
@@ -76,11 +77,13 @@ public class StreamManager {
 		return INSTANCE;
 	}
 
-	/** @param classPath
+	/**
+	 * @param classPath
 	 *            Path to file to test.
 	 * @return True if the file looks like a jar. It "looks" like a jar if the
 	 *         file does ends with ".jar" OR the content probe detects that it
-	 *         is a java archive. */
+	 *         is a java archive.
+	 */
 	private boolean isJar(Path classPath) {
 		// TODO Improve and test jar checking algorithm
 		boolean jar = false;
@@ -123,43 +126,51 @@ public class StreamManager {
 		return config;
 	}
 
-	/** Get String directly from config file.
+	/**
+	 * Get String directly from config file.
 	 * 
 	 * @param settingName
 	 *            The name of the setting in the config file.
-	 * @return The value of the setting. */
+	 * @return The value of the setting.
+	 */
 	public String getRawConfig(String settingName) {
 		return config.getProperty(settingName);
 	}
 
-	/** Parse a boolean from the setting.
+	/**
+	 * Parse a boolean from the setting.
 	 * 
 	 * @param settingName
 	 *            The name of the setting in the config file.
 	 * @return A boolean representing the setting. Returns false if the setting
-	 *         is not defined or does not represent a boolean true. */
+	 *         is not defined or does not represent a boolean true.
+	 */
 	public boolean getBool(String settingName) {
 		return Boolean.parseBoolean(config.getProperty(settingName));
 	}
 
-	/** Parse an int from the setting in config.
+	/**
+	 * Parse an int from the setting in config.
 	 * 
 	 * @param settingName
 	 *            The name of the setting in the config file.
 	 * @return An integer representing the setting.
 	 * @throws NumberFormatException
-	 *             If the setting can not be converted to an int. */
+	 *             If the setting can not be converted to an int.
+	 */
 	public int getInt(String settingName) {
 		return Integer.parseInt(config.getProperty(settingName));
 	}
 
-	/** Parse an int from the setting in config.
+	/**
+	 * Parse an int from the setting in config.
 	 * 
 	 * @param settingName
 	 *            The name of the setting in the config file.
 	 * @return An integer representing the setting.
 	 * @throws NumberFormatException
-	 *             If the setting can not be converted to an int. */
+	 *             If the setting can not be converted to an int.
+	 */
 	public long getLong(String settingName) {
 		return Long.parseLong(config.getProperty(settingName));
 	}
@@ -173,17 +184,20 @@ public class StreamManager {
 	}
 
 	private SymbolImage getSymbolImage() {
-		SymbolImage image = new SymbolImage(gameFolder.resolve("res").resolve(
-				"symbols.png"));
+		SymbolImage image = new SymbolImage(
+				Paths.get(System.getProperties().getProperty("user.dir"))
+						.resolve("res").resolve("symbols.png"));
 
 		return image;
 	}
 
-	/** Make sure all the streams are closed.
+	/**
+	 * Make sure all the streams are closed.
 	 * 
 	 * @throws IOException
 	 *             if the streams fail to close. There is no guarantee the
-	 *             streams will all be closed if this occurs. */
+	 *             streams will all be closed if this occurs.
+	 */
 	public void closeAllStreams() throws IOException {
 		while (streams.iterator().hasNext()) {
 			Closeable item = streams.iterator().next();
@@ -193,9 +207,11 @@ public class StreamManager {
 		streams = null;
 	}
 
-	/** Check the use data directory and make sure all data is valid. If the
+	/**
+	 * Check the use data directory and make sure all data is valid. If the
 	 * directory does not contain valid data, move resources from res folder to
-	 * game directory. */
+	 * game directory.
+	 */
 	private void verifyGameData() throws IOException {
 		// TODO Check user directory for config
 
