@@ -8,12 +8,9 @@ import ticTacMinMax.gameEngine.board.twoDimensional.BoardLocation2D;
 public abstract class TicTacToePlayer {
 	protected Board2D gameBoard;
 
-	protected int playerOrder;
-
 	private static final String TIE_GAME_TEXT = "Cat's game.";
 
-	public TicTacToePlayer(int turnOrder) {
-		playerOrder = turnOrder;
+	public TicTacToePlayer() {
 		gameBoard = GameManager.getInstance().getBoard();
 	}
 

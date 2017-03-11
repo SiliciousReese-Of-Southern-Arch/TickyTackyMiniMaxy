@@ -84,14 +84,14 @@ public class GameManager {
 
 		/* Initialize both players. Max is the mini-max AI. */
 		if (player1Human)
-			players[0] = new HumanPlayer(0);
+			players[0] = new HumanPlayer();
 		else
-			players[0] = new Max(0);
+			players[0] = new Max();
 
 		if (player2Human)
-			players[1] = new HumanPlayer(1);
+			players[1] = new HumanPlayer();
 		else
-			players[1] = new Max(1);
+			players[1] = new Max();
 
 		return players;
 	}

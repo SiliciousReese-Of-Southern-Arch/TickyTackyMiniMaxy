@@ -6,13 +6,6 @@ import ticTacMinMax.userInterface.SwingManager;
 import ticTacMinMax.userInterface.contentPanes.TicTacToePane;
 
 public class Board2D extends GameBoard {
-	/*
-	 * TODO Add current player as part of board. It belongs here because a few
-	 * parts of the code currently require a needing to know, and the current
-	 * player is defined by the last player to place a piece, and it should
-	 * always start with the same player.
-	 */
-
 	/* Board constants */
 
 	/* This must be a positive integer. It is usually three. */
@@ -38,6 +31,8 @@ public class Board2D extends GameBoard {
 	 */
 	private int numMoves;
 
+	private boolean playerOneTurn;
+
 	/**
 	 * A TicTacToe board.
 	 * 
@@ -58,6 +53,8 @@ public class Board2D extends GameBoard {
 			}
 
 		numMoves = 0;
+
+		playerOneTurn = true;
 	}
 
 	public Board2D(Board2D parent) {
@@ -72,30 +69,8 @@ public class Board2D extends GameBoard {
 		board = clone;
 
 		numMoves = parent.numMoves;
-	}
 
-	/**
-	 * place a piece at the given location on the board.
-	 * 
-	 * @param playerNumber
-	 *            Either player one or player two. This determines the symbol to
-	 *            place in the board array.
-	 * @throws InvalidMoveExeption
-	 *             If the location is already taken.
-	 */
-	public void placePiece(BoardLocation2D loc, int playerNumber) {
-		int row = loc.row();
-		int column = loc.column();
-		if (!board[column][row][0]) {
-			board[column][row][0] = true;
-			board[column][row][1] = playerNumber == 1;
-		} else
-			throw new UnsupportedOperationException("Location not empty."
-					+ board[column][row] + " placed at " + column + ", " + row);
-
-		numMoves++;
-
-		boardGUI.repaint();
+		playerOneTurn = parent.playerOneTurn;
 	}
 
 	/**
@@ -109,18 +84,19 @@ public class Board2D extends GameBoard {
 	 * @throws InvalidMoveExeption
 	 *             If the location is already taken.
 	 */
-	public void placePiece(BoardLocation2D loc, int playerNumber,
-			boolean repaint) {
+	public void placePiece(BoardLocation2D loc, boolean repaint) {
 		int row = loc.row();
 		int column = loc.column();
 		if (!board[column][row][0]) {
 			board[column][row][0] = true;
-			board[column][row][1] = playerNumber == 1;
+			board[column][row][1] = playerOneTurn;
 		} else
 			throw new UnsupportedOperationException("Location not empty."
 					+ board[column][row] + " placed at " + column + ", " + row);
 
 		numMoves++;
+
+		playerOneTurn = !playerOneTurn;
 
 		if (repaint)
 			boardGUI.repaint();

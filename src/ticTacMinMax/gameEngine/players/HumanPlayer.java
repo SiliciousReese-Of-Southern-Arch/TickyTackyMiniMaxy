@@ -10,8 +10,8 @@ public class HumanPlayer extends TicTacToePlayer {
 	private static final Board2D gameBoard2D = GameManager.getInstance()
 			.getBoard();
 
-	public HumanPlayer(int turnOrder) {
-		super(turnOrder);
+	public HumanPlayer() {
+		super();
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class HumanPlayer extends TicTacToePlayer {
 		BoardLocation2D loc = new BoardLocation2D(coordinates[0],
 				coordinates[1]);
 
-		gameBoard.placePiece(loc, playerOrder);
+		gameBoard.placePiece(loc, true);
 
 		return null;
 	}
@@ -56,12 +56,12 @@ public class HumanPlayer extends TicTacToePlayer {
 
 	@Override
 	public void victory() {
-		System.out.println("Player " + playerOrder + " won!");
+		/* TODO Better player victory message. */
+		System.out.println("Player won!");
 	}
 
 	@Override
 	public void defeat() {
-		System.out.println(
-				"Player " + playerOrder + " was beat by a superior player...");
+		System.out.println("Player was beat by a superior player...");
 	}
 }

@@ -24,8 +24,7 @@ public class BestMoveFinder {
 	 * @return The optimal move for the given board, or the top-right location
 	 *         if the board is full.
 	 */
-	public static BoardLocation2D getBestPoint(Board2D startingBoard,
-			int currentPlayer) {
+	public static BoardLocation2D getBestPoint(Board2D startingBoard) {
 		/* Start with undefined so that any valid move will be higher. */
 		int highScore = UNDEFINED;
 		int currentScore;
@@ -50,7 +49,7 @@ public class BestMoveFinder {
 					Board2D testBoard = new Board2D(startingBoard);
 					currentScore = TIE_SCORE;
 
-					testBoard.placePiece(newPiece, currentPlayer, false);
+					testBoard.placePiece(newPiece, false);
 
 					if (testBoard.isGameWon())
 						currentScore = WIN_SCORE;
@@ -59,8 +58,7 @@ public class BestMoveFinder {
 						 * Place piece as next player. If they win invert the
 						 * score
 						 */
-						currentScore = getBestScore(testBoard,
-								-currentPlayer + 1) * -1;
+						currentScore = getBestScore(testBoard) * -1;
 				}
 
 				if (currentScore > highScore) {
@@ -85,7 +83,7 @@ public class BestMoveFinder {
 	 *            The current player.
 	 * @return The highest score or TIE__SCORE if board is full.
 	 */
-	private static int getBestScore(Board2D board, int player) {
+	private static int getBestScore(Board2D board) {
 		/* Works similarly to the getBestPoint() method. */
 
 		int newScore = TIE_SCORE;
@@ -98,15 +96,14 @@ public class BestMoveFinder {
 				if (!board.isPieceAt(new BoardLocation2D(i, j))) {
 					Board2D testBoard = new Board2D(board);
 
-					testBoard.placePiece(new BoardLocation2D(i, j), player,
-							false);
+					testBoard.placePiece(new BoardLocation2D(i, j), false);
 
 					if (testBoard.isGameWon())
 						newScore = WIN_SCORE;
 					else if (testBoard.isFull())
 						newScore = TIE_SCORE;
 					else
-						newScore = getBestScore(testBoard, -player + 1) * -1;
+						newScore = getBestScore(testBoard) * -1;
 
 					if (newScore > highestScore)
 						highestScore = newScore;

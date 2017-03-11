@@ -6,16 +6,16 @@ import ticTacMinMax.gameEngine.players.TicTacToePlayer;
 
 /** MAX is my mini-max Tic-Tac-Toe algorithm. */
 public class Max extends TicTacToePlayer {
-	public Max(int turnOrder) {
-		super(turnOrder);
+	public Max() {
+		super();
 	}
 
 	@Override
 	public BoardLocation2D getMove() {
-		BoardLocation2D loc = BestMoveFinder.getBestPoint(
-				GameManager.getInstance().getBoard(), playerOrder);
+		BoardLocation2D loc = BestMoveFinder
+				.getBestPoint(GameManager.getInstance().getBoard());
 
-		gameBoard.placePiece(loc, playerOrder);
+		gameBoard.placePiece(loc, true);
 		return loc;
 	}
 
